@@ -6,6 +6,7 @@ import Landing from './pages/landing';
 import Signup from './pages/signup';
 import Login from './pages/login';
 import AboutPage from './pages/about';
+import ContactPage from './pages/contact';
 // Import other pages as needed
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/contact" element={<ContactPage />} />
         {/* Add other routes as needed */}
       </Routes>
     </Router>
