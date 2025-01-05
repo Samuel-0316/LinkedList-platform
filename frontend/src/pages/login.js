@@ -1,18 +1,45 @@
-// frontend/src/pages/Login.js
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import '../assets/styles/login.css';
 
 const Login = () => {
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+
+  // State to hold form data and messages
+  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [errorMessage, setErrorMessage] = useState('');
+
+  // Handle input change
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setFormData({ ...formData, [id]: value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const btn = document.querySelector('.login-btn');
     btn.style.transform = 'scale(0.95)';
     setTimeout(() => {
       btn.style.transform = 'scale(1)';
-      // Here you would typically handle the login logic
-      // Navigate to home page after successful login
     }, 200);
+
+    try {
+      // Send login request using Axios
+      const response = await axios.post('http://localhost:5000/api/auth/login', formData);
+
+      if (response.status === 200) {
+        // Login successful, redirect to dashboard
+        console.log('Login successful:', response.data);
+        navigate('/dashboard'); // Adjust the path as per your routing
+      } else {
+        // Login failed, display error message
+        setErrorMessage(response.data.message || 'Login failed. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      setErrorMessage('An error occurred. Please try again later.');
+    }
   };
 
   const handleInputFocus = (e) => {
@@ -36,9 +63,11 @@ const Login = () => {
         <form id="loginForm" onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="email">Email Address</label>
-            <input 
-              type="email" 
-              id="email" 
+            <input
+              type="email"
+              id="email"
+              value={formData.email}
+              onChange={handleInputChange}
               required
               onFocus={handleInputFocus}
               onBlur={handleInputBlur}
@@ -47,9 +76,11 @@ const Login = () => {
           </div>
           <div className="form-group">
             <label htmlFor="password">Password</label>
-            <input 
-              type="password" 
-              id="password" 
+            <input
+              type="password"
+              id="password"
+              value={formData.password}
+              onChange={handleInputChange}
               required
               onFocus={handleInputFocus}
               onBlur={handleInputBlur}
@@ -62,6 +93,7 @@ const Login = () => {
           <button type="submit" className="login-btn">
             Log In
           </button>
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
           <p className="signup-link">
             Don't have an account? <Link to="/signup">Sign up</Link>
           </p>
