@@ -2,7 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/navbar';
-// import Home from './pages/Home';
+import Landing from './pages/landing';
 import Signup from './pages/signup';
 import Login from './pages/login';
 // Import other pages as needed
@@ -13,7 +13,7 @@ function App() {
       <Navbar />
       {/* <Signup /> */}
       <Routes>
-        {/* <Route path="/" element={<Home />} /> */}
+        <Route path="/" element={<Landing />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         {/* Add other routes as needed */}
