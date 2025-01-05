@@ -7,6 +7,7 @@ body {
     animation: gradient 15s ease infinite;
     margin: 0;
     font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
 }
 
 .login-page {
