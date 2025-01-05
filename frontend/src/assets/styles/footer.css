@@ -1,0 +1,23 @@
+/* footer.css */
+.footer-container {
+    background-color: #6a4c9c; /* Violet Color */
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    width: 100%;
+  }
+  
+  .footer-content p {
+    font-size: 1rem;
+    margin: 5px 0;
+  }
+  
+  .footer-content p:first-child {
+    font-weight: bold;
+  }
+  
+  .footer-content p:last-child {
+    font-style: italic;
+    font-size: 0.9rem;
+  }
+  

@@ -5,6 +5,7 @@ import Navbar from './components/navbar';
 import Landing from './pages/landing';
 import Signup from './pages/signup';
 import Login from './pages/login';
+import AboutPage from './pages/about';
 // Import other pages as needed
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/about" element={<AboutPage />} />
         {/* Add other routes as needed */}
       </Routes>
     </Router>

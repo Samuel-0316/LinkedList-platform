@@ -2,9 +2,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../assets/styles/landing.css';
+import Footer from './footer';
 
 const Landing = () => {
   return (
+    <>
     <div className="home-page">
       <div className="hero-section">
         <div className="content-wrapper animate__animated animate__fadeIn">
@@ -51,6 +53,8 @@ const Landing = () => {
         </div>
       </div>
     </div>
+    <Footer/>
+    </>
   );
 };
 
