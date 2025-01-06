@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import '../assets/styles/dashboard.css';
 import pro_pic from '../assets/images/pro_pic.jpg'
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const [ouruser, setUsername] = useState('');
+  useEffect(()=>{
+    const storedusername = localStorage.getItem('username');
+    setUsername(storedusername||" ");
+  },[]);
   // This would typically come from your auth/user context
   const user = {
     name: "John Doe",
@@ -35,7 +41,8 @@ const Dashboard = () => {
   };
 
   const handleLogout = () => {
-    // Add your logout logic here
+    localStorage.removeItem('token'); // Clear the token
+    setUsername('');
     navigate('/login');
   };
 
@@ -53,7 +60,7 @@ const Dashboard = () => {
             <div className="greeting-container">
               <div className="greeting-header">
                 <div className="greeting">
-                  <h1>Welcome, {user.name}</h1>
+                  <h1>Welcome, {ouruser}</h1>
                   <p>Continue your learning journey</p>
                 </div>
                 <button onClick={handleLogout} className="logout-btn">

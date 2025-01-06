@@ -27,8 +27,10 @@ const Login = () => {
     try {
       // Send login request using Axios
       const response = await axios.post('http://localhost:5000/api/auth/login', formData);
+      console.log('Response Data:', response.data);
 
       if (response.status === 200) {
+        localStorage.setItem('username',response.data.data.username);
         // Login successful, redirect to dashboard
         console.log('Login successful:', response.data);
         navigate('/dashboard'); // Adjust the path as per your routing
