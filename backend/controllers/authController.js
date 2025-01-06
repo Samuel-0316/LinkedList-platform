@@ -45,7 +45,7 @@ const login = async (req, res) => {
 
         // Generate token
         const token = generateToken(user._id);
-        sendResponse(res, 200, 'Login successful', { token, user });
+        sendResponse(res, 200, 'Login successful', { token, username:user.username });
     } catch (error) {
         sendResponse(res, 500, 'Error logging in', error);
     }

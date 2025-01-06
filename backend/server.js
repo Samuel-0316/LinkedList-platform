@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import colors from 'colors';
 import connectDB from './config/db.js';
 import errorHandler from './middlewares/errorMiddleware.js';
+import cors from 'cors';
 
 // Import Routes
 import quizRoutes from './routes/quizRoutes.js';
@@ -22,6 +23,7 @@ const app = express();
 
 // Middleware for parsing JSON
 app.use(express.json());
+app.use(cors());
 
 // Routes
 app.use('/api/auth', router);          
