@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../assets/styles/dashboard.css';
-import pro_pic from '../assets/images/pro_pic.jpg'
+import pro_pic from '../assets/images/pro_pic.jpg';
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  
   // This would typically come from your auth/user context
   const user = {
     name: "John Doe",
@@ -12,21 +13,42 @@ const Dashboard = () => {
     courses: [
       {
         id: 1,
-        title: "Data Structures Fundamentals",
-        progress: 65,
-        totalLessons: 24,
-        completedLessons: 16,
+        title: "Introduction and Operations of Linked List",
+        progress: 70,
+        totalLessons: 18,
+        completedLessons: 15,
       },
       {
         id: 2,
-        title: "Algorithm Analysis",
+        title: "Single Linked List",
         progress: 30,
         totalLessons: 18,
         completedLessons: 6,
       },
       {
         id: 3,
-        title: "Advanced Problem Solving",
+        title: "Double Linked List",
+        progress: 15,
+        totalLessons: 30,
+        completedLessons: 4,
+      },
+      {
+        id: 4,
+        title: "Circular Linked List",
+        progress: 15,
+        totalLessons: 30,
+        completedLessons: 4,
+      },
+      {
+        id: 5,
+        title: "Stack implementation using Linked List",
+        progress: 15,
+        totalLessons: 30,
+        completedLessons: 4,
+      },
+      {
+        id: 6,
+        title: "Queue implementation using Linked List",
         progress: 15,
         totalLessons: 30,
         completedLessons: 4,
@@ -45,7 +67,7 @@ const Dashboard = () => {
         <div className="user-header animate__fadeIn">
           <div className="profile-section">
             <img 
-            //   src={user.profilePic} 
+              // src={user.profilePic} 
               src={pro_pic}
               alt="Profile" 
               className="profile-pic"
@@ -102,8 +124,11 @@ const Dashboard = () => {
                 <div className="course-stats">
                   <p>{course.completedLessons} of {course.totalLessons} lessons completed</p>
                 </div>
-                <Link to={`/course/${course.id}`} className="continue-btn">
-                  Continue Learning
+                <Link 
+                  to={`/learn/${course.id}`} 
+                  className="continue-btn"
+                >
+                  {course.progress > 0 ? 'Continue Learning' : 'Start Course'}
                   <i className="fas fa-arrow-right"></i>
                 </Link>
               </div>
