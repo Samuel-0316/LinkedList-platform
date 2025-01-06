@@ -9,6 +9,7 @@ import AboutPage from './pages/about';
 import ContactPage from './pages/contact';
 import Dashboard from './pages/dashboard';
 import LearningInterface from './pages/learning_interface';
+import CoursesPage from './pages/courses'
 // Import other pages as needed
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/learn/:courseId" element={<LearningInterface />} />
+        <Route path="/courses" element={<CoursesPage />} />
         {/* Add other routes as needed */}
       </Routes>
     </Router>

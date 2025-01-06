@@ -13,7 +13,7 @@ const Dashboard = () => {
   },[]);
   // This would typically come from your auth/user context
   const user = {
-    name: "John Doe",
+    name: "Samuel Srujan B",
     profilePic: "",
     courses: [
       {
