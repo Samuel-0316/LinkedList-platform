@@ -255,3 +255,354 @@
         padding: 1rem;
     }
 }
+
+/* Quiz Results Styles */
+.quiz-results {
+    padding: 2rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.results-card {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.results-header {
+    margin-bottom: 2rem;
+}
+
+.results-header i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.results-header i.fa-check-circle {
+    color: #10b981;
+}
+
+.results-header i.fa-times-circle {
+    color: #ef4444;
+}
+
+.results-header h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0;
+}
+
+.score-display {
+    margin: 2rem 0;
+}
+
+.score-circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc;
+    border: 4px solid #6366f1;
+}
+
+.score-number {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: #6366f1;
+    line-height: 1;
+}
+
+.score-total {
+    font-size: 1rem;
+    color: #6b7280;
+    margin-top: 0.5rem;
+}
+
+.result-message {
+    margin: 2rem 0;
+}
+
+.success-message {
+    color: #10b981;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.failure-message {
+    color: #ef4444;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.score-description {
+    color: #6b7280;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.results-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.retry-button,
+.review-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.retry-button {
+    background: #6366f1;
+    color: white;
+}
+
+.retry-button:hover {
+    background: #4f46e5;
+}
+
+.review-button {
+    background: #f8fafc;
+    color: #6366f1;
+    border: 2px solid #6366f1;
+}
+
+.review-button:hover {
+    background: #6366f1;
+    color: white;
+}
+
+/* Add this to your existing media query */
+@media (max-width: 768px) {
+    .quiz-results {
+        padding: 1rem;
+    }
+
+    .results-actions {
+        flex-direction: column;
+    }
+
+    .score-circle {
+        width: 120px;
+        height: 120px;
+    }
+
+    .score-number {
+        font-size: 2.5rem;
+    }
+}
+
+/* Add these styles to your learning-interface.css file */
+
+/* Submit Button Styles */
+.submit-quiz-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    background: #10b981; /* Green color for submit */
+    color: white;
+    font-weight: 500;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+}
+
+.submit-quiz-button:hover:not(:disabled) {
+    background: #059669;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);
+}
+
+.submit-quiz-button:disabled {
+    background: #e5e7eb;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.submit-quiz-button i {
+    font-size: 1.1rem;
+}
+
+/* Update existing quiz navigation styles */
+.quiz-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+/* Update option button styles for better feedback */
+.option-button {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    background: white;
+    text-align: left;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.option-button:hover:not(.selected) {
+    border-color: #6366f1;
+    background: rgba(99, 102, 241, 0.05);
+}
+
+.option-button.selected {
+    border-color: #6366f1;
+    background: rgba(99, 102, 241, 0.1);
+    position: relative;
+}
+
+.option-button.selected::after {
+    content: '\f00c';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    right: 1.5rem;
+    color: #6366f1;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .answers-review {
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+    }
+
+    .answer-item {
+        padding: 1rem;
+    }
+
+    .question-text {
+        font-size: 1rem;
+    }
+}
+
+.answers-review {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e5e7eb;
+    text-align: left;
+}
+
+.answers-review h3 {
+    font-size: 1.25rem;
+    color: #1f2937;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.answer-item {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid transparent;
+}
+
+.answer-item.correct {
+    border-left-color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.answer-item.incorrect {
+    border-left-color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.question-number {
+    font-weight: 600;
+    color: #4b5563;
+    margin-bottom: 0.5rem;
+}
+
+.question-text {
+    font-size: 1.1rem;
+    color: #1f2937;
+    margin-bottom: 1rem;
+}
+
+.answer-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.your-answer, .correct-answer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.answer-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    margin-left: auto;
+}
+
+.answer-icon.correct {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+}
+
+.answer-icon.incorrect {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+}
+
+.answer-icon i {
+    font-size: 0.875rem;
+}
+
+/* Update existing results card styles */
+.results-card {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+#submit_button{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    background: #6366f1;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
