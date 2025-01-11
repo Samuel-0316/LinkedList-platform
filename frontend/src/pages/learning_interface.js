@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import courseData from '../data/courseData';
 import '../assets/styles/learning_interface.css';
+import QuizTimerModal from '../components/quiz_timer_modal';
 
 const LearningInterface = () => {
   const { courseId } = useParams();
@@ -14,6 +15,8 @@ const LearningInterface = () => {
   const [quizResults, setQuizResults] = useState(null);
   const [answerResults, setAnswerResults] = useState([]);
   const [attemptCount, setAttemptCount] = useState(0);
+  const [showQuizPrompt, setShowQuizPrompt] = useState(false);
+  const [quizStarted, setQuizStarted] = useState(false);
 
   // Get course data based on courseId
   const course = courseData[courseId];
@@ -29,12 +32,24 @@ const LearningInterface = () => {
 
   const handleModeSwitch = (mode) => {
     setActiveMode(mode);
-    // Reset quiz state when switching modes
     if (mode === 'quiz') {
+      setShowQuizPrompt(true);
+      setQuizStarted(false);
       setQuizSubmitted(false);
       setQuizResults(null);
       setCurrentQuestion(0);
       setSelectedAnswers({});
+    }
+  };
+
+  const handleQuizStart = () => {
+    setShowQuizPrompt(false);
+    setQuizStarted(true);
+  };
+  
+  const handleTimeUp = () => {
+    if (!quizSubmitted) {
+      evaluateQuiz();
     }
   };
 
@@ -103,29 +118,23 @@ const LearningInterface = () => {
       <div className="content-area">
         <h2>{course.tutorials.sections[currentSection].title}</h2>
         <div className="video-container">
-          {/* <img 
-            src={course.tutorials.sections[currentSection].videoUrl}
-            alt="Video content" 
-            className="video-placeholder"
-          /> */}
           <iframe
-               width="560"
-               height="315"
-               src={course.videoUrl}
-              //  title={course.title}
-               frameborder="0"
-               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-               referrerpolicy="strict-origin-when-cross-origin"
-               allowfullscreen
-           ></iframe>
+            width="560"
+            height="315"
+            src={course.videoUrl}
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          ></iframe>
         </div>
         <div className="notes-section">
-            <h3>Notes</h3>
-           <div
-             className="notes-content"
-             dangerouslySetInnerHTML={{ __html: course.tutorials.sections[currentSection].content }}
-           ></div>
-          </div>
+          <h3>Notes</h3>
+          <div
+            className="notes-content"
+            dangerouslySetInnerHTML={{ __html: course.tutorials.sections[currentSection].content }}
+          ></div>
+        </div>
       </div>
       <div className="sidebar">
         <h3>Contents</h3>
@@ -216,15 +225,15 @@ const LearningInterface = () => {
             </div>
 
             <div className="results-actions">
-            {!quizResults.passed && attemptCount < 3 && (
-              <button 
-                className="retry-button"
-                onClick={handleRetryQuiz}  // Changed from onClick={() => handleModeSwitch('quiz')}
+              {!quizResults.passed && attemptCount < 3 && (
+                <button 
+                  className="retry-button"
+                  onClick={handleRetryQuiz}
                 >
-                <i className="fas fa-redo"></i>
-                Try Again
-              </button>
-            )}
+                  <i className="fas fa-redo"></i>
+                  Try Again
+                </button>
+              )}
               <button 
                 className="review-button"
                 onClick={() => setActiveMode('tutorial')}
@@ -240,7 +249,12 @@ const LearningInterface = () => {
 
     return (
       <div className="quiz-container animate__fadeIn">
-        {course.quizzes.length > 0 ? (
+        <QuizTimerModal 
+          isOpen={showQuizPrompt}
+          onStart={handleQuizStart}
+          onTimeUp={handleTimeUp}
+        />
+        {quizStarted && course.quizzes.length > 0 ? (
           <>
             <div className="quiz-progress">
               Question {currentQuestion + 1} of {course.quizzes.length}
@@ -274,7 +288,8 @@ const LearningInterface = () => {
                   <i className="fas fa-arrow-left"></i> Previous
                 </button>
                 {currentQuestion === course.quizzes.length - 1 ? (
-                  <button id='submit_button'
+                  <button
+                    id='submit_button'
                     className="submit-button"
                     onClick={evaluateQuiz}
                     disabled={Object.keys(selectedAnswers).length < course.quizzes.length}
@@ -292,7 +307,7 @@ const LearningInterface = () => {
               </div>
             </div>
           </>
-        ) : (
+        ) : !quizStarted ? null : (
           <div className="placeholder-content">
             <i className="fas fa-question-circle"></i>
             <h2>No Quizzes Available</h2>
