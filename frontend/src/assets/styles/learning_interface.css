@@ -73,9 +73,11 @@
 
 .video-container {
     width: 100%;
-    margin-bottom: 2rem;
-    border-radius: 12px;
+    margin: 2rem;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .video-placeholder {
@@ -85,15 +87,103 @@
 }
 
 .notes-section {
-    background: #f8fafc;
-    padding: 2rem;
-    border-radius: 12px;
-}
-
-.notes-content {
-    line-height: 1.6;
-    color: #4b5563;
-}
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .notes-section h3 {
+    margin-bottom: 15px;
+    font-size: 26px;
+    color: #333333;
+    text-align: center;
+  }
+  
+  .notes-content {
+    font-size: 18px;
+    line-height: 1.75;
+    color: #444444;
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-y: auto;
+    height: 400px; /* optional, for better scroll management */
+    box-sizing: border-box;
+  }
+  
+  .notes-content p {
+    margin-bottom: 20px;
+  }
+  
+  .notes-content ul {
+    padding-left: 20px;
+  }
+  
+  .notes-content li {
+    margin-bottom: 12px;
+    list-style-type: disc;
+  }
+  
+  .notes-content a {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .notes-content a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+  }
+  
+  .sidebar {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: white;
+    color: rgb(10, 9, 9);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .sidebar h4 {
+    margin-bottom: 15px;
+    font-size: 22px;
+    color: white;
+  }
+  
+  .sidebar ul {
+    padding: 0;
+    list-style-type: none;
+  }
+  
+  .sidebar li {
+    margin-bottom: 12px;
+  }
+  
+  .sidebar a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .sidebar a:hover {
+    color: #1e90ff;
+  }
+  
+  @media (max-width: 768px) {
+    .notes-section {
+      flex-direction: column;
+    }
+    
+    .notes-content, .sidebar {
+      width: 100%;
+    }
+  }
+  
 
 .sidebar {
     width: 250px;

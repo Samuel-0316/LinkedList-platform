@@ -1,28 +1,47 @@
 // frontend/src/data/courseData.js
+import contents from './contents/intro_and_operations'
+import contents2 from './contents/single_linked_list'
+import contents3 from './contents/double_linked_list'
+import contents4 from './contents/circular_linked_list'
+import contents5 from './contents/stack_implementation'
+import contents6 from './contents/queue_implementation'
 
 const courseData = {
   1: {
     title: "Introduction and Operations of Linked List",
     description: "Explore the fundamentals of linked lists, their types, and common operations like insertion, deletion, and traversal.",
+    videoUrl:"https://www.youtube.com/embed/0HyIda5eub8?si=HqyenpnTrMeXBbOt",
     tutorials: {
       sections: [
         {
           id: 1,
-          title: "Arrays and Strings",
-          content: "Arrays are fundamental data structures that store elements in contiguous memory locations...",
-          videoUrl: "/api/placeholder/800/450"
+          title: "Linked List Data Structure",
+          content: contents.Linked_list_ds,
         },
         {
           id: 2,
-          title: "Linked Lists",
-          content: "A linked list is a linear data structure where elements are stored in nodes...",
-          videoUrl: "/api/placeholder/800/450"
+          title: "Basic Terminologies of Linked List",
+          content: contents.Terminologies,
         },
         {
           id: 3,
-          title: "Stacks and Queues",
-          content: "Stacks follow LIFO (Last In First Out) principle while Queues follow FIFO...",
-          videoUrl: "/api/placeholder/800/450"
+          title: "Applications, Advantages and Disadvantages",
+          content: contents.ApplicationsAdvantagesDisadvantages,
+        },
+        {
+          id: 4,
+          title: "Linked List vs Array",
+          content: contents.LinkedListVsArray,
+        },
+        {
+          id: 5,
+          title: "Types of Linked List",
+          content: contents.TypesOfLinkedList,
+        },
+        {
+          id: 6,
+          title: "Time Complexity",
+          content: contents.Time_Complexity,
         }
       ]
     },
@@ -93,19 +112,43 @@ const courseData = {
   2: {
     title: "Single Linked List",
     description: "Learn the structure and operations of a single linked list, including insertion, deletion, and traversal techniques.",
+    videoUrl:"https://www.youtube.com/embed/6wXZ_m3SbEs?si=myRvJyqV3_FauW6J",
     tutorials: {
       sections: [
         {
           id: 1,
-          title: "Basics of Single Linked List",
-          content: "A singly linked list is a type of linked list where each node points to the next node in the sequence...",
-          videoUrl: "/api/placeholder/800/450"
+          title: "Introduction to Single Linked List",
+          content: contents2.Definition
         },
         {
           id: 2,
+          title: "Structure of Single Linked List",
+          content:contents2.Structure
+        },
+        {
+          id: 3,
           title: "Common Operations in Single Linked List",
-          content: "Common operations include inserting nodes at the head, tail, or any position, as well as deleting nodes...",
-          videoUrl: "/api/placeholder/800/450"
+          content:contents2.Operations
+        },
+        {
+          id: 4,
+          title: "Time Complexity",
+          content:contents2.TimeComplexity
+        },
+        {
+          id: 5,
+          title: "Advantages of Single Linked List",
+          content:contents2.Advantages
+        },
+        {
+          id: 6,
+          title: "Disadvantages of Single Linked List",
+          content:contents2.Disadvantages
+        },
+        {
+          id: 7,
+          title: "Applications Single Linked List",
+          content:contents2.Applications
         }
       ]
     },
@@ -171,19 +214,43 @@ const courseData = {
   3: {
     title: "Double Linked List",
     description: "Understand the structure and operations of a doubly linked list, where nodes are connected both forward and backward.",
+    videoUrl:"https://www.youtube.com/embed/6wXZ_m3SbEs?si=myRvJyqV3_FauW6J",
     tutorials: {
       sections: [
         {
           id: 1,
-          title: "Basics of Double Linked List",
-          content: "A doubly linked list is a type of linked list in which each node has two pointers: one pointing to the next node and another to the previous node...",
-          videoUrl: "/api/placeholder/800/450"
+          title: "Introduction to Double Linked List",
+          content: contents3.Definition
         },
         {
           id: 2,
+          title: "Structure of Double Linked List",
+          content:contents3.Structure
+        },
+        {
+          id: 3,
           title: "Common Operations in Double Linked List",
-          content: "Operations include insertion, deletion, and traversal in both forward and backward directions...",
-          videoUrl: "/api/placeholder/800/450"
+          content:contents3.Operations
+        },
+        {
+          id: 4,
+          title: "Time Complexity",
+          content:contents3.TimeComplexity
+        },
+        {
+          id: 5,
+          title: "Advantages of Double Linked List",
+          content:contents3.Advantages
+        },
+        {
+          id: 6,
+          title: "Disadvantages of Double Linked List",
+          content:contents3.Disadvantages
+        },
+        {
+          id: 7,
+          title: "Applications Double Linked List",
+          content:contents3.Applications
         }
       ]
     },
@@ -249,19 +316,43 @@ const courseData = {
   4: {
     title: "Circular Linked List",
     description: "Learn about circular linked lists, their structure, and how to perform various operations effectively.",
+    videoUrl:"https://www.youtube.com/embed/6wXZ_m3SbEs?si=myRvJyqV3_FauW6J",
     tutorials: {
       sections: [
         {
           id: 1,
-          title: "Basics of Circular Linked List",
-          content: "A circular linked list is a linked list where the last node points back to the head, forming a loop...",
-          videoUrl: "/api/placeholder/800/450"
+          title: "Introduction to Circular Linked List",
+          content: contents4.Definition
         },
         {
           id: 2,
-          title: "Operations in Circular Linked List",
-          content: "Common operations include insertion, deletion, and traversal with special handling for circular connections...",
-          videoUrl: "/api/placeholder/800/450"
+          title: "Structure of Circular Linked List",
+          content:contents4.Structure
+        },
+        {
+          id: 3,
+          title: "Common Operations in Circular Linked List",
+          content:contents4.Operations
+        },
+        {
+          id: 4,
+          title: "Time Complexity",
+          content:contents4.TimeComplexity
+        },
+        {
+          id: 5,
+          title: "Advantages of Circular Linked List",
+          content:contents4.Advantages
+        },
+        {
+          id: 6,
+          title: "Disadvantages of Circular Linked List",
+          content:contents4.Disadvantages
+        },
+        {
+          id: 7,
+          title: "Applications Circular Linked List",
+          content:contents4.Applications
         }
       ]
     },
@@ -332,25 +423,53 @@ const courseData = {
   5: {
     title: "Stack Implementation Using Linked List",
     description: "Learn how to implement stacks using linked lists, covering basic operations like push, pop, and peek, along with their applications.",
+    videoUrl:"https://www.youtube.com/embed/6wXZ_m3SbEs?si=myRvJyqV3_FauW6J",
     tutorials: {
       sections: [
         {
           id: 1,
-          title: "Introduction to Stack Data Structure",
-          content: "A stack is a linear data structure that follows the LIFO (Last In, First Out) principle. Learn the basics and applications of stacks...",
-          videoUrl: "/api/placeholder/800/450"
+          title: "Introduction to stack",
+          content: contents5.Introduction
         },
         {
           id: 2,
-          title: "Stack Implementation Using Linked List",
-          content: "Understand how to implement a stack using linked lists, where each node contains data and a pointer to the next node...",
-          videoUrl: "/api/placeholder/800/450"
+          title: "Structure of Stack using linked list",
+          content:contents5.Structure
         },
         {
           id: 3,
-          title: "Operations on Stack Using Linked List",
-          content: "Explore key stack operations like push (insertion), pop (deletion), and peek (viewing the top element) implemented via linked lists...",
-          videoUrl: "/api/placeholder/800/450"
+          title: "Common Operations in Stack",
+          content:contents5.Operations
+        },
+        {
+          id: 4,
+          title: "Visualization of stack",
+          content: contents5.visualization
+        },
+        {
+          id: 5,
+          title: "Examples",
+          content: contents5.Examples
+        },
+        {
+          id: 6,
+          title: "Time Complexity",
+          content:contents5.TimeComplexity
+        },
+        {
+          id: 7,
+          title: "Advantages of Stack",
+          content:contents5.Advantages
+        },
+        {
+          id: 8,
+          title: "Disadvantages of Stack",
+          content:contents5.Disadvantages
+        },
+        {
+          id: 9,
+          title: "Applications Stack",
+          content:contents5.Applications
         }
       ]
     },
@@ -416,25 +535,48 @@ const courseData = {
   6: {
     title: "Queue Implementation Using Linked List",
     description: "Learn how to implement queues using linked lists, focusing on operations like enqueue, dequeue, and their applications in real-world scenarios.",
+    videoUrl:"https://www.youtube.com/embed/0HyIda5eub8?si=HqyenpnTrMeXBbOt",
     tutorials: {
       sections: [
         {
           id: 1,
-          title: "Introduction to Queue Data Structure",
-          content: "A queue is a linear data structure that follows the FIFO (First In, First Out) principle. Understand its basic operations and applications...",
-          videoUrl: "/api/placeholder/800/450"
+          title: "Introduction to Queue",
+          content: contents6.Introduction
         },
         {
           id: 2,
-          title: "Queue Implementation Using Linked List",
-          content: "Explore the implementation of queues using linked lists, where elements are dynamically allocated and pointers manage the front and rear...",
-          videoUrl: "/api/placeholder/800/450"
+          title: "Structure of Queue using linked list",
+          content:contents6.Structure
         },
         {
           id: 3,
-          title: "Operations on Queue Using Linked List",
-          content: "Learn how to perform enqueue (insertion), dequeue (deletion), and peek (viewing the front element) operations using linked lists...",
-          videoUrl: "/api/placeholder/800/450"
+          title: "Common Operations in Queue",
+          content:contents6.Operations
+        },
+        {
+          id: 4,
+          title: "Time Complexity",
+          content: contents6.Time_Complexity
+        },
+        {
+          id: 5,
+          title: "Visualization of Queue",
+          content: contents6.Visualization
+        },
+        {
+          id: 6,
+          title: "Advantages of Queue",
+          content:contents6.Advantages
+        },
+        {
+          id: 7,
+          title: "Disadvantages of Queue",
+          content:contents6.Disadvantages
+        },
+        {
+          id: 8,
+          title: "Applications Queue",
+          content:contents6.Applications
         }
       ]
     },

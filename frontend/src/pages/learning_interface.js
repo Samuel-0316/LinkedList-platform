@@ -103,18 +103,29 @@ const LearningInterface = () => {
       <div className="content-area">
         <h2>{course.tutorials.sections[currentSection].title}</h2>
         <div className="video-container">
-          <img 
+          {/* <img 
             src={course.tutorials.sections[currentSection].videoUrl}
             alt="Video content" 
             className="video-placeholder"
-          />
+          /> */}
+          <iframe
+               width="560"
+               height="315"
+               src={course.videoUrl}
+              //  title={course.title}
+               frameborder="0"
+               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+               referrerpolicy="strict-origin-when-cross-origin"
+               allowfullscreen
+           ></iframe>
         </div>
         <div className="notes-section">
-          <h3>Notes</h3>
-          <div className="notes-content">
-            {course.tutorials.sections[currentSection].content}
+            <h3>Notes</h3>
+           <div
+             className="notes-content"
+             dangerouslySetInnerHTML={{ __html: course.tutorials.sections[currentSection].content }}
+           ></div>
           </div>
-        </div>
       </div>
       <div className="sidebar">
         <h3>Contents</h3>
