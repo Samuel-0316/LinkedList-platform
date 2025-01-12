@@ -61,6 +61,43 @@
     margin: 0.5rem 0 0 0;
 }
 
+/* New Overall Progress Styles */
+.overall-progress {
+    background: rgba(99, 102, 241, 0.05);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin: 2rem 0;
+}
+
+.overall-progress h3 {
+    color: #1a1a1a;
+    margin: 0 0 1rem 0;
+    font-size: 1.2rem;
+}
+
+.main-progress-bar {
+    height: 12px;
+    background: #e5e7eb;
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.main-progress-fill {
+    height: 100%;
+    background: linear-gradient(135deg, #6366f1, #a855f7);
+    border-radius: 999px;
+    transition: width 0.5s ease;
+}
+
+.progress-text {
+    color: #4b5563;
+    font-size: 1rem;
+    margin: 0.5rem 0 0 0;
+    text-align: right;
+    font-weight: 500;
+}
+
 .logout-btn {
     display: flex;
     align-items: center;
@@ -169,21 +206,6 @@
     font-weight: 500;
 }
 
-.progress-bar {
-    height: 8px;
-    background: #e5e7eb;
-    border-radius: 999px;
-    overflow: hidden;
-    margin: 1rem 0;
-}
-
-.progress-fill {
-    height: 100%;
-    background: linear-gradient(135deg, #6366f1, #a855f7);
-    border-radius: 999px;
-    transition: width 0.3s ease;
-}
-
 .course-stats {
     color: #4b5563;
     font-size: 0.9rem;
@@ -217,7 +239,7 @@
 .generate-certificate-container button {
     padding: 12px 24px;
     font-size: 16px;
-    background-color: #831ecf;  /* Primary button color */
+    background-color: #831ecf;
     color: white;
     border: none;
     border-radius: 8px;
@@ -225,10 +247,10 @@
 }
 
 .generate-certificate-container button:hover {
-    background-color: #450c70;   /* Darker shade on hover */
+    background-color: #450c70;
 }
 
-.not-completed-message{
+.not-completed-message {
     color: rgb(110, 5, 5);
 }
 
@@ -263,5 +285,9 @@
 
     .courses-grid {
         grid-template-columns: 1fr;
+    }
+
+    .overall-progress {
+        margin: 1rem 0;
     }
 }
