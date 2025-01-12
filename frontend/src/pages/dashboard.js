@@ -5,6 +5,8 @@ import '../assets/styles/dashboard.css';
 import pro_pic from '../assets/images/pro_pic.jpg';
 
 const Dashboard = () => {
+  const [completed,setCompleted] = useState(true);
+  const [completedMessage,setcompletedMessage] = useState(" ");
   const navigate = useNavigate();
   const [ouruser, setUsername] = useState('');
   useEffect(()=>{
@@ -61,11 +63,50 @@ const Dashboard = () => {
     ]
   };
 
-  const handleLogout = () => {
+  const handleLogout =  () => {
     localStorage.removeItem('token'); // Clear the token
     setUsername('');
     navigate('/login');
   };
+
+  const handleCertificate = async () => {
+    if(!completed){
+      setcompletedMessage("first course complete mado laude");
+      return;
+    }
+    try {
+      setcompletedMessage("Downloading...")
+      const token = localStorage.getItem('token');
+      const response = await fetch('http://localhost:5000/certificate', {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ isCompleted: true }),
+      });
+  
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `Certificate.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      } else {
+        const errorData = await response.json();
+        console.error('Error:', errorData);
+      }
+    } catch (error) {
+      console.error('Error generating certificate:', error);
+    }
+  };
+  
+  
+  
 
   return (
     <div className="dashboard-page">
@@ -141,6 +182,12 @@ const Dashboard = () => {
             ))}
           </div>
         </section>
+        <div className='generate-certificate-container'>
+            <button onClick={handleCertificate}>Generate Certificate</button>
+            <div className='not-completed-message'>
+            <p>{completedMessage}</p>
+            </div>            
+        </div>
       </div>
     </div>
   );

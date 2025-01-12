@@ -10,7 +10,7 @@ const courseData = {
   1: {
     title: "Introduction and Operations of Linked List",
     description: "Explore the fundamentals of linked lists, their types, and common operations like insertion, deletion, and traversal.",
-    videoUrl:"https://www.youtube.com/embed/0HyIda5eub8?si=HqyenpnTrMeXBbOt",
+    videoUrl:"https://www.youtube.com/embed/dmb1i4oN5oE?si=x0kDhml3koBbPFDn",
     tutorials: {
       sections: [
         {
@@ -112,7 +112,7 @@ const courseData = {
   2: {
     title: "Single Linked List",
     description: "Learn the structure and operations of a single linked list, including insertion, deletion, and traversal techniques.",
-    videoUrl:"https://www.youtube.com/embed/6wXZ_m3SbEs?si=myRvJyqV3_FauW6J",
+    videoUrl:"https://www.youtube.com/embed/6wXZ_m3SbEs?si=oksOb0EbJfObsulU",
     tutorials: {
       sections: [
         {
@@ -214,7 +214,7 @@ const courseData = {
   3: {
     title: "Double Linked List",
     description: "Understand the structure and operations of a doubly linked list, where nodes are connected both forward and backward.",
-    videoUrl:"https://www.youtube.com/embed/6wXZ_m3SbEs?si=myRvJyqV3_FauW6J",
+    videoUrl:"https://www.youtube.com/embed/0eKMU10uEDI?si=A3q0-1meBSmZj9V3",
     tutorials: {
       sections: [
         {

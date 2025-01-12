@@ -72,11 +72,18 @@
 }
 
 .video-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
-    margin-bottom: 2rem;
-    border-radius: 12px;
-    overflow: hidden;
-}
+    max-width: 800px; /* Set a maximum width */
+    margin: 0 auto;  /* Center the container */
+    padding: 5px;
+    box-sizing: border-box;
+  }
+  
+  
+  
 
 .video-placeholder {
     width: 100%;
