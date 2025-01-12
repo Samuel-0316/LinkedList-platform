@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import courseData from '../data/courseData';
 import '../assets/styles/learning_interface.css';
-import QuizTimerModal from '../components/quiz_timer_modal';
+
 
 const LearningInterface = () => {
   const { courseId } = useParams();
@@ -15,8 +15,9 @@ const LearningInterface = () => {
   const [quizResults, setQuizResults] = useState(null);
   const [answerResults, setAnswerResults] = useState([]);
   const [attemptCount, setAttemptCount] = useState(0);
-  const [showQuizPrompt, setShowQuizPrompt] = useState(false);
   const [quizStarted, setQuizStarted] = useState(false);
+  const [timeRemaining, setTimeRemaining] = useState(360);
+  const [timerExpired, setTimerExpired] = useState(false);
 
   // Get course data based on courseId
   const course = courseData[courseId];
@@ -28,33 +29,85 @@ const LearningInterface = () => {
     }
   }, [course, navigate]);
 
-  if (!course) return null;
+  // Timer effect
+  useEffect(() => {
+    let timer;
+    if (quizStarted && !quizSubmitted && !timerExpired && timeRemaining > 0) {
+      timer = setInterval(() => {
+        setTimeRemaining((prev) => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            setTimerExpired(true);
+            handleTimeUp();
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [quizStarted, quizSubmitted, timerExpired]);
+
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
+
+  const handleTimeUp = () => {
+    setQuizSubmitted(true);
+    setAttemptCount(prev => prev + 1);
+    setQuizResults({
+      score: 0,
+      total: course.quizzes.length,
+      passed: false,
+      timeExpired: true
+    });
+  };
 
   const handleModeSwitch = (mode) => {
     setActiveMode(mode);
     if (mode === 'quiz') {
-      setShowQuizPrompt(true);
       setQuizStarted(false);
       setQuizSubmitted(false);
       setQuizResults(null);
       setCurrentQuestion(0);
       setSelectedAnswers({});
+      setTimeRemaining(360);
+      setTimerExpired(false);
     }
   };
 
   const handleQuizStart = () => {
-    setShowQuizPrompt(false);
     setQuizStarted(true);
-  };
-  
-  const handleTimeUp = () => {
-    if (!quizSubmitted) {
-      evaluateQuiz();
-    }
+    setTimeRemaining(360);
+    setTimerExpired(false);
   };
 
   const handleSectionChange = (index) => {
     setCurrentSection(index);
+  };
+
+  const handleNextSection = () => {
+    if (currentSection < course.tutorials.sections.length - 1) {
+      setCurrentSection(currentSection + 1);
+    }
+  };
+
+  const handlePreviousSection = () => {
+    if (currentSection > 0) {
+      setCurrentSection(currentSection - 1);
+    }
+  };
+
+  const handleMarkAsComplete = () => {
+    // Add your completion logic here
+    alert('Tutorial marked as complete!');
+    // You might want to:
+    // - Update user progress in your database
+    // - Show a completion modal
+    // - Navigate to the next course
+    // - Enable the quiz mode
   };
 
   const handleAnswerSelect = (questionId, optionIndex) => {
@@ -134,6 +187,30 @@ const LearningInterface = () => {
             className="notes-content"
             dangerouslySetInnerHTML={{ __html: course.tutorials.sections[currentSection].content }}
           ></div>
+          <div className="tutorial-navigation">
+            <button 
+              className="nav-button"
+              onClick={handlePreviousSection}
+              disabled={currentSection === 0}
+            >
+              <i className="fas fa-arrow-left"></i> Previous
+            </button>
+            {currentSection === course.tutorials.sections.length - 1 ? (
+              <button 
+                className="complete-button"
+                onClick={handleMarkAsComplete}
+              >
+                <i className="fas fa-check-circle"></i> Mark as Complete
+              </button>
+            ) : (
+              <button 
+                className="nav-button"
+                onClick={handleNextSection}
+              >
+                Next <i className="fas fa-arrow-right"></i>
+              </button>
+            )}
+          </div>
         </div>
       </div>
       <div className="sidebar">
@@ -170,7 +247,7 @@ const LearningInterface = () => {
           <div className="results-card">
             <div className="results-header">
               <i className={`fas ${quizResults.passed ? 'fa-check-circle' : 'fa-times-circle'}`}></i>
-              <h2>{quizResults.passed ? 'Congratulations!' : 'Keep Practicing'}</h2>
+              <h2>{quizResults.timeExpired ? 'Time Over!' : (quizResults.passed ? 'Congratulations!' : 'Keep Practicing')}</h2>
             </div>
             
             <div className="score-display">
@@ -179,9 +256,11 @@ const LearningInterface = () => {
                 <div className="score-total">out of {quizResults.total}</div>
               </div>
             </div>
-
+  
             <div className="result-message">
-              {quizResults.passed ? (
+              {quizResults.timeExpired ? (
+                <p className="failure-message">You ran out of time. Please try again.</p>
+              ) : quizResults.passed ? (
                 <>
                   <p className="success-message">Great job! You've passed the quiz!</p>
                   <p className="score-description">
@@ -200,7 +279,7 @@ const LearningInterface = () => {
                 </>
               )}
             </div>
-
+  
             <div className="answers-review">
               <h3>Detailed Results</h3>
               {answerResults.map((result, index) => (
@@ -223,9 +302,9 @@ const LearningInterface = () => {
                 </div>
               ))}
             </div>
-
+  
             <div className="results-actions">
-              {!quizResults.passed && attemptCount < 3 && (
+              {attemptCount < 3 && (
                 <button 
                   className="retry-button"
                   onClick={handleRetryQuiz}
@@ -246,58 +325,64 @@ const LearningInterface = () => {
         </div>
       );
     }
-
+  
     return (
       <div className="quiz-container animate__fadeIn">
-        <QuizTimerModal 
-          isOpen={showQuizPrompt}
-          onStart={handleQuizStart}
-          onTimeUp={handleTimeUp}
-        />
-        {quizStarted && course.quizzes.length > 0 ? (
+        {!quizStarted ? (
+          <div className="quiz-start-section">
+            <h2>Ready to Start the Quiz?</h2>
+            <div>
+              <h4 className="quiz-instructions" id="ins">
+                You will have 6 minutes to complete this quiz. <br />The timer will start as soon as you click 'Start Quiz'.
+              </h4>
+              <button
+                className="start-quiz-btn"
+                onClick={handleQuizStart}
+              >
+                Start Quiz
+              </button>
+            </div>
+          </div>
+        ) : course.quizzes.length > 0 ? (
           <>
-            <div className="quiz-progress">
-              Question {currentQuestion + 1} of {course.quizzes.length}
+            <div className="quiz-header">
+              <div className="quiz-progress">
+                <span>Question {currentQuestion + 1} of {course.quizzes.length}</span>
+                <span className="timer">Time Remaining: {formatTime(timeRemaining)}</span>
+              </div>
             </div>
             <div className="question-card">
-              <h2>{course.quizzes[currentQuestion].question}</h2>
+              <h3>{course.quizzes[currentQuestion].question}</h3>
               <div className="options-grid">
                 {course.quizzes[currentQuestion].options.map((option, index) => (
                   <button
                     key={index}
-                    className={`option-button ${
-                      selectedAnswers[course.quizzes[currentQuestion].id] === index 
-                        ? 'selected' 
-                        : ''
-                    }`}
+                    className={`option-button ${selectedAnswers[course.quizzes[currentQuestion].id] === index ? 'selected' : ''}`}
                     onClick={() => handleAnswerSelect(course.quizzes[currentQuestion].id, index)}
                   >
-                    <span className="option-letter">
-                      {String.fromCharCode(65 + index)}
-                    </span>
+                    <span className="option-letter">{String.fromCharCode(65 + index)}</span>
                     {option}
                   </button>
                 ))}
               </div>
               <div className="quiz-navigation">
-                <button 
+                <button
                   className="nav-button"
-                  disabled={currentQuestion === 0}
                   onClick={handlePreviousQuestion}
+                  disabled={currentQuestion === 0}
                 >
                   <i className="fas fa-arrow-left"></i> Previous
                 </button>
                 {currentQuestion === course.quizzes.length - 1 ? (
                   <button
-                    id='submit_button'
-                    className="submit-button"
+                    className="submit-quiz-button"
                     onClick={evaluateQuiz}
                     disabled={Object.keys(selectedAnswers).length < course.quizzes.length}
                   >
-                    Submit Quiz
+                    <i className="fas fa-check-circle"></i> Submit Quiz
                   </button>
                 ) : (
-                  <button 
+                  <button
                     className="nav-button"
                     onClick={handleNextQuestion}
                   >
@@ -307,7 +392,7 @@ const LearningInterface = () => {
               </div>
             </div>
           </>
-        ) : !quizStarted ? null : (
+        ) : (
           <div className="placeholder-content">
             <i className="fas fa-question-circle"></i>
             <h2>No Quizzes Available</h2>
