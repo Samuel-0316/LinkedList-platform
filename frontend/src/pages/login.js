@@ -31,6 +31,7 @@ const Login = () => {
 
       if (response.status === 200) {
         localStorage.setItem('username',response.data.data.username);
+        localStorage.setItem('token',response.data.data.token);
         // Login successful, redirect to dashboard
         console.log('Login successful:', response.data);
         navigate('/dashboard'); // Adjust the path as per your routing
