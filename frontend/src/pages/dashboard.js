@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { Check } from 'lucide-react';
 import '../assets/styles/dashboard.css';
 import pro_pic from '../assets/images/pro_pic.jpg';
 
@@ -9,11 +9,41 @@ const Dashboard = () => {
   const [completedMessage, setcompletedMessage] = useState(" ");
   const navigate = useNavigate();
   const [ouruser, setUsername] = useState('');
+  const [courseStatus, setCourseStatus] = useState({});
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const storedusername = localStorage.getItem('username');
     setUsername(storedusername || " ");
+    fetchCourseStatus();
   }, []);
+
+  const fetchCourseStatus = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch('http://localhost:5000/api/course/progress', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch course progress');
+      }
+
+      const data = await response.json();
+      setCourseStatus(data.coursesCompleted);
+      setCompleted(data.isCompleted);
+    } catch (error) {
+      console.error('Error fetching course progress:', error);
+      setError('Failed to load course progress');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const user = {
     name: "Samuel Srujan B",
@@ -52,10 +82,10 @@ const Dashboard = () => {
     ]
   };
 
-  // Calculate overall progress
   const calculateOverallProgress = () => {
-    const totalProgress = user.courses.reduce((sum, course) => sum + course.progress, 0);
-    return Math.round(totalProgress / user.courses.length);
+    if (!courseStatus || Object.keys(courseStatus).length === 0) return 0;
+    const completedCourses = Object.values(courseStatus).filter(status => status === true).length;
+    return Math.round((completedCourses / user.courses.length) * 100);
   };
 
   const handleLogout = () => {
@@ -70,7 +100,7 @@ const Dashboard = () => {
       return;
     }
     try {
-      setcompletedMessage("Downloading...")
+      setcompletedMessage("Downloading...");
       const token = localStorage.getItem('token');
       const response = await fetch('http://localhost:5000/certificate', {
         method: "POST",
@@ -99,6 +129,26 @@ const Dashboard = () => {
       console.error('Error generating certificate:', error);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="dashboard-page">
+        <div className="dashboard-content">
+          <div className="text-center p-8">Loading course progress...</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="dashboard-page">
+        <div className="dashboard-content">
+          <div className="text-center p-8 text-red-500">{error}</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="dashboard-page">
@@ -161,7 +211,14 @@ const Dashboard = () => {
                 <div className="course-header">
                   <h3>{course.title}</h3>
                   <div className="progress-badge">
-                    {course.progress}%
+                    {courseStatus[`course${course.id}`] ? (
+                      <div className="flex items-center gap-2">
+                        100%
+                        <Check className="w-4 h-4 text-white" />
+                      </div>
+                    ) : (
+                      "0%"
+                    )}
                   </div>
                 </div>
                 <div className="course-stats">
@@ -171,16 +228,16 @@ const Dashboard = () => {
                   to={`/learn/${course.id}`}
                   className="continue-btn"
                 >
-                  {course.progress > 0 ? 'Continue Learning' : 'Start Course'}
+                  {courseStatus[`course${course.id}`] ? 'Review Course' : 'Start Course'}
                   <i className="fas fa-arrow-right"></i>
                 </Link>
               </div>
             ))}
           </div>
         </section>
-        <div className='generate-certificate-container'>
+        <div className="generate-certificate-container">
           <button onClick={handleCertificate}>Generate Certificate</button>
-          <div className='not-completed-message'>
+          <div className="not-completed-message">
             <p>{completedMessage}</p>
           </div>
         </div>

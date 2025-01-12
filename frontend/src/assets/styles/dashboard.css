@@ -291,3 +291,13 @@
         margin: 1rem 0;
     }
 }
+
+.progress-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .progress-badge svg {
+    margin-left: 4px;
+  }
