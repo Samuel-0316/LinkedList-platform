@@ -58,18 +58,19 @@ const LearningInterface = () => {
 
   const handleMarkCourseComplete = async () => {
     try {
+      const token = localStorage.getItem('token');
       const response = await fetch('http://localhost:5000/api/course/update-progress', {
         method: 'POST',
         headers: {
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ courseKey: courseId }),
+        body: JSON.stringify({ "courseId": courseId }), // Ensure this matches the backend expected field
       });
-
+  
       if (!response.ok) {
         throw new Error('Failed to mark course as completed');
       }
-
       const data = await response.json();
       setCourseCompleted(true);
       alert('Congratulations! Course marked as completed.');
