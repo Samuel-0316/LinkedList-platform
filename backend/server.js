@@ -7,9 +7,9 @@ import cors from 'cors';
 
 // Import Routes
 import quizRoutes from './routes/quizRoutes.js';
-import leaderboardRoutes from './routes/leaderboardRoutes.js';
 import router from './routes/authRoutes.js';
 import certificateRoutes from './routes/certificateRoutes.js';
+import courseRoutes from './routes/courseRoutes.js';
 
 dotenv.config();
 
@@ -26,9 +26,8 @@ app.use(cors());
 console.log('Certificate route registered');
 app.use('/api/auth', router);          
 app.use('/api/quizzes', quizRoutes);       
-app.use('/api/leaderboard', leaderboardRoutes);
-console.log('Certificate route registered'); 
 app.use('/certificate',certificateRoutes);
+app.use('/api/course',courseRoutes);
 app.use(errorHandler);
 
 // Base route
