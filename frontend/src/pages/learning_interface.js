@@ -18,6 +18,8 @@ const LearningInterface = () => {
   const [quizStarted, setQuizStarted] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState(360);
   const [timerExpired, setTimerExpired] = useState(false);
+  const [tutorialCompleted, setTutorialCompleted] = useState(false);
+  const [courseCompleted, setCourseCompleted] = useState(false);
 
   // Get course data based on courseId
   const course = courseData[courseId];
@@ -54,6 +56,30 @@ const LearningInterface = () => {
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
+  const handleMarkCourseComplete = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/course/update-progress', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ courseKey: courseId }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to mark course as completed');
+      }
+
+      const data = await response.json();
+      setCourseCompleted(true);
+      alert('Congratulations! Course marked as completed.');
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Error marking course as complete:', error);
+      alert('Failed to mark course as completed. Please try again.');
+    }
+  };
+
   const handleTimeUp = () => {
     setQuizSubmitted(true);
     setAttemptCount(prev => prev + 1);
@@ -66,6 +92,11 @@ const LearningInterface = () => {
   };
 
   const handleModeSwitch = (mode) => {
+    if (mode === 'quiz' && !tutorialCompleted) {
+      alert('Please complete the tutorial first before accessing the quiz.');
+      return;
+    }
+    
     setActiveMode(mode);
     if (mode === 'quiz') {
       setQuizStarted(false);
@@ -98,16 +129,6 @@ const LearningInterface = () => {
     if (currentSection > 0) {
       setCurrentSection(currentSection - 1);
     }
-  };
-
-  const handleMarkAsComplete = () => {
-    // Add your completion logic here
-    alert('Tutorial marked as complete!');
-    // You might want to:
-    // - Update user progress in your database
-    // - Show a completion modal
-    // - Navigate to the next course
-    // - Enable the quiz mode
   };
 
   const handleAnswerSelect = (questionId, optionIndex) => {
@@ -166,19 +187,31 @@ const LearningInterface = () => {
     }
   };
 
+  const handleStartQuiz = () => {
+    if (tutorialCompleted) {
+      setActiveMode('quiz');
+      setQuizStarted(false);
+      setTimeRemaining(360);
+      setTimerExpired(false);
+    } else {
+      alert('Please complete the tutorial first before starting the quiz.');
+    }
+  };
+
   const renderTutorialMode = () => (
     <div className="tutorial-container animate__fadeIn">
       <div className="content-area">
+        {/* <h2>{courseId}</h2> */}
         <h2>{course.tutorials.sections[currentSection].title}</h2>
         <div className="video-container">
           <iframe
             width="560"
             height="315"
             src={course.videoUrl}
-            frameborder="0"
+            frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin"
-            allowfullscreen
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
           ></iframe>
         </div>
         <div className="notes-section">
@@ -198,9 +231,12 @@ const LearningInterface = () => {
             {currentSection === course.tutorials.sections.length - 1 ? (
               <button 
                 className="complete-button"
-                onClick={handleMarkAsComplete}
+                onClick={() => {
+                  setTutorialCompleted(true);
+                  handleStartQuiz();
+                }}
               >
-                <i className="fas fa-check-circle"></i> Mark as Complete
+                <i className="fas fa-check-circle"></i> Complete & Start Quiz
               </button>
             ) : (
               <button 
@@ -304,22 +340,45 @@ const LearningInterface = () => {
             </div>
   
             <div className="results-actions">
-              {attemptCount < 3 && (
-                <button 
-                  className="retry-button"
-                  onClick={handleRetryQuiz}
-                >
-                  <i className="fas fa-redo"></i>
-                  Try Again
-                </button>
+              {quizResults.passed ? (
+                <>
+                  {!courseCompleted && (
+                    <button 
+                      className="complete-course-button"
+                      onClick={handleMarkCourseComplete}
+                    >
+                      <i className="fas fa-graduation-cap"></i>
+                      Mark Course Completed
+                    </button>
+                  )}
+                  <button 
+                    className="review-button"
+                    onClick={() => setActiveMode('tutorial')}
+                  >
+                    <i className="fas fa-book"></i>
+                    Review Material
+                  </button>
+                </>
+              ) : (
+                <>
+                  {attemptCount < 3 && (
+                    <button 
+                      className="retry-button"
+                      onClick={handleRetryQuiz}
+                    >
+                      <i className="fas fa-redo"></i>
+                      Try Again
+                    </button>
+                  )}
+                  <button 
+                    className="review-button"
+                    onClick={() => setActiveMode('tutorial')}
+                  >
+                    <i className="fas fa-book"></i>
+                    Review Material
+                  </button>
+                </>
               )}
-              <button 
-                className="review-button"
-                onClick={() => setActiveMode('tutorial')}
-              >
-                <i className="fas fa-book"></i>
-                Review Material
-              </button>
             </div>
           </div>
         </div>
@@ -423,9 +482,10 @@ const LearningInterface = () => {
         <button 
           className={`mode-button ${activeMode === 'quiz' ? 'active' : ''}`}
           onClick={() => handleModeSwitch('quiz')}
+          disabled={!tutorialCompleted}
         >
           <i className="fas fa-question-circle"></i>
-          Quiz
+          Quiz {!tutorialCompleted && '(Complete Tutorial First)'}
         </button>
       </div>
       <div className="mode-content">

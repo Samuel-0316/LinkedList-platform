@@ -5,15 +5,16 @@ import '../assets/styles/dashboard.css';
 import pro_pic from '../assets/images/pro_pic.jpg';
 
 const Dashboard = () => {
-  const [completed,setCompleted] = useState(true);
-  const [completedMessage,setcompletedMessage] = useState(" ");
+  const [completed, setCompleted] = useState(true);
+  const [completedMessage, setcompletedMessage] = useState(" ");
   const navigate = useNavigate();
   const [ouruser, setUsername] = useState('');
-  useEffect(()=>{
+
+  useEffect(() => {
     const storedusername = localStorage.getItem('username');
-    setUsername(storedusername||" ");
-  },[]);
-  // This would typically come from your auth/user context
+    setUsername(storedusername || " ");
+  }, []);
+
   const user = {
     name: "Samuel Srujan B",
     profilePic: "",
@@ -21,56 +22,50 @@ const Dashboard = () => {
       {
         id: 1,
         title: "Introduction and Operations of Linked List",
-        progress: 70,
-        totalLessons: 18,
-        completedLessons: 15,
+        totalLessons: 6
       },
       {
         id: 2,
         title: "Single Linked List",
-        progress: 30,
-        totalLessons: 18,
-        completedLessons: 6,
+        totalLessons: 7
       },
       {
         id: 3,
         title: "Double Linked List",
-        progress: 15,
-        totalLessons: 30,
-        completedLessons: 4,
+        totalLessons: 7
       },
       {
         id: 4,
         title: "Circular Linked List",
-        progress: 15,
-        totalLessons: 30,
-        completedLessons: 4,
+        totalLessons: 7
       },
       {
         id: 5,
         title: "Stack implementation using Linked List",
-        progress: 15,
-        totalLessons: 30,
-        completedLessons: 4,
+        totalLessons: 9
       },
       {
         id: 6,
         title: "Queue implementation using Linked List",
-        progress: 15,
-        totalLessons: 30,
-        completedLessons: 4,
+        totalLessons: 8
       }
     ]
   };
 
-  const handleLogout =  () => {
-    localStorage.removeItem('token'); // Clear the token
+  // Calculate overall progress
+  const calculateOverallProgress = () => {
+    const totalProgress = user.courses.reduce((sum, course) => sum + course.progress, 0);
+    return Math.round(totalProgress / user.courses.length);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
     setUsername('');
     navigate('/login');
   };
 
   const handleCertificate = async () => {
-    if(!completed){
+    if (!completed) {
       setcompletedMessage("first course complete mado laude");
       return;
     }
@@ -85,7 +80,7 @@ const Dashboard = () => {
         },
         body: JSON.stringify({ isCompleted: true }),
       });
-  
+
       if (response.ok) {
         const blob = await response.blob();
         const url = URL.createObjectURL(blob);
@@ -104,19 +99,15 @@ const Dashboard = () => {
       console.error('Error generating certificate:', error);
     }
   };
-  
-  
-  
 
   return (
     <div className="dashboard-page">
       <div className="dashboard-content">
         <div className="user-header animate__fadeIn">
           <div className="profile-section">
-            <img 
-              // src={user.profilePic} 
+            <img
               src={pro_pic}
-              alt="Profile" 
+              alt="Profile"
               className="profile-pic"
             />
             <div className="greeting-container">
@@ -132,7 +123,18 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-          
+
+          <div className="overall-progress">
+            <h3>Overall Course Progress</h3>
+            <div className="main-progress-bar">
+              <div
+                className="main-progress-fill"
+                style={{ width: `${calculateOverallProgress()}%` }}
+              ></div>
+            </div>
+            <p className="progress-text">{calculateOverallProgress()}% Complete</p>
+          </div>
+
           <div className="quick-stats">
             <div className="stat-card">
               <i className="fas fa-book-open"></i>
@@ -162,17 +164,11 @@ const Dashboard = () => {
                     {course.progress}%
                   </div>
                 </div>
-                <div className="progress-bar">
-                  <div 
-                    className="progress-fill"
-                    style={{ width: `${course.progress}%` }}
-                  ></div>
-                </div>
                 <div className="course-stats">
-                  <p>{course.completedLessons} of {course.totalLessons} lessons completed</p>
+                  <p>Total no of {course.totalLessons} lessons</p>
                 </div>
-                <Link 
-                  to={`/learn/${course.id}`} 
+                <Link
+                  to={`/learn/${course.id}`}
                   className="continue-btn"
                 >
                   {course.progress > 0 ? 'Continue Learning' : 'Start Course'}
@@ -183,10 +179,10 @@ const Dashboard = () => {
           </div>
         </section>
         <div className='generate-certificate-container'>
-            <button onClick={handleCertificate}>Generate Certificate</button>
-            <div className='not-completed-message'>
+          <button onClick={handleCertificate}>Generate Certificate</button>
+          <div className='not-completed-message'>
             <p>{completedMessage}</p>
-            </div>            
+          </div>
         </div>
       </div>
     </div>
