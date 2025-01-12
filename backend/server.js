@@ -9,15 +9,12 @@ import cors from 'cors';
 import quizRoutes from './routes/quizRoutes.js';
 import leaderboardRoutes from './routes/leaderboardRoutes.js';
 import router from './routes/authRoutes.js';
+import certificateRoutes from './routes/certificateRoutes.js';
 
-
-
-// Load environment variables
 dotenv.config();
 
 // Connect to MongoDB
 connectDB();
-
 // Initialize Express app
 const app = express();
 
@@ -26,9 +23,12 @@ app.use(express.json());
 app.use(cors());
 
 // Routes
+console.log('Certificate route registered');
 app.use('/api/auth', router);          
 app.use('/api/quizzes', quizRoutes);       
-app.use('/api/leaderboard', leaderboardRoutes); 
+app.use('/api/leaderboard', leaderboardRoutes);
+console.log('Certificate route registered'); 
+app.use('/certificate',certificateRoutes);
 app.use(errorHandler);
 
 // Base route

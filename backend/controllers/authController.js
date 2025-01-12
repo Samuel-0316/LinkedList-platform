@@ -51,23 +51,6 @@ const login = async (req, res) => {
     }
 };
 
-// Middleware to authenticate JWT token
-const authenticateUser = async (req, res, next) => {
-    const token = req.header('Authorization')?.split(' ')[1]; // Expecting 'Bearer <token>'
-    if (!token) {
-        return sendResponse(res, 401, 'No token provided');
-    }
-
-    try {
-        // Verify the token
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded; // Attach user info to request object
-        next(); // Proceed to next middleware or controller
-    } catch (error) {
-        return sendResponse(res, 401, 'Invalid token');
-    }
-};
-
 // Update profile
 const updateProfile = async (req, res) => {
     try {
@@ -97,4 +80,4 @@ const updateProfile = async (req, res) => {
     }
 };
 
-export { signup, login, authenticateUser, updateProfile };
+export { signup, login, updateProfile };
