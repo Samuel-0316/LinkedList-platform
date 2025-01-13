@@ -9,24 +9,33 @@ import AboutPage from './pages/about';
 import ContactPage from './pages/contact';
 import Dashboard from './pages/dashboard';
 import LearningInterface from './pages/learning_interface';
-import CoursesPage from './pages/courses'
-// Import other pages as needed
+import CoursesPage from './pages/courses';
+import PrivateRoute from './components/privateroute';
 
 function App() {
   return (
     <Router>
       <Navbar />
-      {/* <Signup /> */}
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/learn/:courseId" element={<LearningInterface />} />
-        <Route path="/courses" element={<CoursesPage />} />
-        {/* Add other routes as needed */}
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route path="/learn/:courseId" element={<PrivateRoute>
+              <LearningInterface />
+            </PrivateRoute>} />
+        <Route path="/courses" element={<PrivateRoute>
+              <CoursesPage />
+            </PrivateRoute>} />
       </Routes>
     </Router>
   );
