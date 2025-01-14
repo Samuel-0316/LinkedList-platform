@@ -22,7 +22,7 @@ const Dashboard = () => {
   const fetchCourseStatus = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/course/progress', {
+      const response = await fetch('https://linkedlist-platform-3.onrender.com/api/course/progress', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -102,7 +102,7 @@ const Dashboard = () => {
     try {
       setcompletedMessage("Downloading...");
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/certificate', {
+      const response = await fetch('https://linkedlist-platform-3.onrender.com/certificate', {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',

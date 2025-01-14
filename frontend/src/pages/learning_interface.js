@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import courseData from '../data/courseData';
 import '../assets/styles/learning_interface.css';
+import { useCallback } from 'react';
 
 
 const LearningInterface = () => {
@@ -31,24 +32,37 @@ const LearningInterface = () => {
     }
   }, [course, navigate]);
 
+const handleTimeUp = useCallback(() => {
+  setQuizSubmitted(true);
+  setAttemptCount((prev) => prev + 1);
+  setQuizResults({
+    score: 0,
+    total: course.quizzes.length,
+    passed: false,
+    timeExpired: true,
+  });
+}, [setQuizSubmitted, setAttemptCount, setQuizResults, course.quizzes.length]);
+
+
   // Timer effect
-  useEffect(() => {
-    let timer;
-    if (quizStarted && !quizSubmitted && !timerExpired && timeRemaining > 0) {
-      timer = setInterval(() => {
-        setTimeRemaining((prev) => {
-          if (prev <= 1) {
-            clearInterval(timer);
-            setTimerExpired(true);
-            handleTimeUp();
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    }
-    return () => clearInterval(timer);
-  }, [quizStarted, quizSubmitted, timerExpired]);
+ useEffect(() => {
+  let timer;
+  if (quizStarted && !quizSubmitted && !timerExpired && timeRemaining > 0) {
+    timer = setInterval(() => {
+      setTimeRemaining((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          setTimerExpired(true);
+          handleTimeUp(); // Now uses the stable `handleTimeUp` reference
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  }
+  return () => clearInterval(timer);
+}, [quizStarted, quizSubmitted, timerExpired, timeRemaining, handleTimeUp]);
+
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -59,7 +73,7 @@ const LearningInterface = () => {
   const handleMarkCourseComplete = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/course/update-progress', {
+      const response = await fetch('https://linkedlist-platform-3.onrender.com/api/course/update-progress', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -71,7 +85,7 @@ const LearningInterface = () => {
       if (!response.ok) {
         throw new Error('Failed to mark course as completed');
       }
-      const data = await response.json();
+      // const data = await response.json();
       setCourseCompleted(true);
       alert('Congratulations! Course marked as completed.');
       navigate('/dashboard');
@@ -81,16 +95,6 @@ const LearningInterface = () => {
     }
   };
 
-  const handleTimeUp = () => {
-    setQuizSubmitted(true);
-    setAttemptCount(prev => prev + 1);
-    setQuizResults({
-      score: 0,
-      total: course.quizzes.length,
-      passed: false,
-      timeExpired: true
-    });
-  };
 
   const handleModeSwitch = (mode) => {
     if (mode === 'quiz' && !tutorialCompleted) {
@@ -208,6 +212,7 @@ const LearningInterface = () => {
           <iframe
             width="560"
             height="315"
+            title='video classes'
             src={course.videoUrl}
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

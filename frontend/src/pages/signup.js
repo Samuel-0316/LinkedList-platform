@@ -28,7 +28,7 @@ const Signup = () => {
 
     try {
       // Send POST request using Axios
-      const response = await axios.post('http://localhost:5000/api/auth/signup', formData);
+      const response = await axios.post('https://linkedlist-platform-3.onrender.com/api/auth/signup', formData);
 
       if (response.status === 201) {
         console.log('Signup successful:', response.data);
