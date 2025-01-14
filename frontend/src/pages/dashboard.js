@@ -96,7 +96,7 @@ const Dashboard = () => {
 
   const handleCertificate = async () => {
     if (!completed) {
-      setcompletedMessage("first course complete mado laude");
+      setcompletedMessage("Complete the course first");
       return;
     }
     try {
