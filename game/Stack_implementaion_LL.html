@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stack Game using Linked List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background-color: #f0f8ff;
+        }
+        h2 {
+            color: #2c3e50;
+        }
+        .stack-container {
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .node {
+            width: 150px;
+            padding: 15px;
+            margin: 10px;
+            background-color: #3498db;
+            color: white;
+            border-radius: 10px;
+            font-size: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .arrow {
+            font-size: 30px;
+            color: #2c3e50;
+        }
+        .controls {
+            margin-top: 20px;
+        }
+        .controls input, .controls button {
+            padding: 10px;
+            margin: 5px;
+            font-size: 16px;
+        }
+        .controls button {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .controls button:hover {
+            background-color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+    <h2>Stack Implementation using Linked List</h2>
+    <div class="controls">
+        <input type="number" id="value" placeholder="Enter a number">
+        <button onclick="push()">Push</button>
+        <button onclick="pop()">Pop</button>
+    </div>
+    <div class="stack-container" id="stack"></div>
+
+    <script>
+        class Node {
+            constructor(value) {
+                this.value = value;
+                this.next = null;
+            }
+        }
+
+        class Stack {
+            constructor() {
+                this.top = null;
+            }
+
+            push(value) {
+                let newNode = new Node(value);
+                newNode.next = this.top;
+                this.top = newNode;
+                this.updateUI();
+            }
+
+            pop() {
+                if (this.top === null) {
+                    alert("Stack is empty!");
+                    return;
+                }
+                this.top = this.top.next;
+                this.updateUI();
+            }
+
+            updateUI() {
+                let stackContainer = document.getElementById("stack");
+                stackContainer.innerHTML = "";
+                let current = this.top;
+                while (current) {
+                    let nodeDiv = document.createElement("div");
+                    nodeDiv.classList.add("node");
+                    nodeDiv.innerText = current.value;
+                    stackContainer.appendChild(nodeDiv);
+                    if (current.next) {
+                        let arrow = document.createElement("div");
+                        arrow.classList.add("arrow");
+                        arrow.innerText = "↓";
+                        stackContainer.appendChild(arrow);
+                    }
+                    current = current.next;
+                }
+            }
+        }
+
+        let stack = new Stack();
+
+        function push() {
+            let value = document.getElementById("value").value;
+            if (value === "") {
+                alert("Please enter a value to push");
+                return;
+            }
+            stack.push(value);
+            document.getElementById("value").value = "";
+        }
+
+        function pop() {
+            stack.pop();
+        }
+    </script>
+</body>
+</html>
