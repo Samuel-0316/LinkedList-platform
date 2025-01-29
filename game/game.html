@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Train Master</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #001f3f;
+            color: white;
+            min-height: 100vh;
+            background-image: 
+                linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+                url('https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f682.svg');
+            background-size: 200px;
+            background-position: center;
+        }
+
+        .game-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .sky {
+            height: 200px;
+            background: linear-gradient(#001f3f, #003366);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(white 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: starTwinkle 3s infinite;
+        }
+
+        @keyframes starTwinkle {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .train-track {
+            background: #2c3e50;
+            padding: 40px 20px;
+            position: relative;
+            min-height: 250px;
+            border-top: 10px solid #34495e;
+            border-bottom: 10px solid #34495e;
+        }
+
+        .rails {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: #95a5a6;
+        }
+
+        .sleeper {
+            position: absolute;
+            bottom: 20px;
+            width: 40px;
+            height: 20px;
+            background: #7f8c8d;
+        }
+
+        .train {
+            display: flex;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s;
+        }
+
+        .engine {
+            width: 150px;
+            height: 100px;
+            background: #e74c3c;
+            border-radius: 10px;
+            position: relative;
+            margin-right: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .engine:before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 20px;
+            width: 30px;
+            height: 40px;
+            background: #c0392b;
+            border-radius: 5px;
+        }
+
+        .compartment {
+            width: 120px;
+            height: 80px;
+            background: #3498db;
+            border-radius: 8px;
+            margin: 0 5px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .compartment:hover {
+            transform: translateY(-5px);
+        }
+
+        .compartment.highlight {
+            background: #f1c40f;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .connector {
+            width: 10px;
+            height: 20px;
+            background: #2c3e50;
+            margin: 0 2px;
+        }
+
+        .controls {
+            background: rgba(44, 62, 80, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .control-panel {
+            background: #34495e;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .panel-title {
+            color: #f1c40f;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 4px;
+            background: #2c3e50;
+            color: white;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 4px;
+            background: #e74c3c;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .mission-panel {
+            background: #2980b9;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .mission-title {
+            color: #f1c40f;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .search-results {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(44, 62, 80, 0.9);
+            padding: 15px;
+            border-radius: 8px;
+            max-width: 300px;
+            display: none;
+        }
+
+        .smoke {
+            position: absolute;
+            top: -20px;
+            left: 30px;
+            width: 10px;
+            height: 10px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 50%;
+            animation: smoke 2s infinite;
+        }
+
+        @keyframes smoke {
+            0% { transform: translateY(0) scale(1); opacity: 0.8; }
+            100% { transform: translateY(-50px) scale(2); opacity: 0; }
+        }
+
+        .wheels {
+            position: absolute;
+            bottom: -10px;
+            width: 20px;
+            height: 20px;
+            background: #2c3e50;
+            border-radius: 50%;
+            animation: rotate 2s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .message {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #e74c3c;
+            padding: 10px 20px;
+            border-radius: 8px;
+            z-index: 1000;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="sky">
+            <div class="stars"></div>
+        </div>
+
+        <div class="mission-panel">
+            <div class="mission-title">Current Mission</div>
+            <div id="currentMission">Welcome to Train Master!</div>
+        </div>
+
+        <div class="controls">
+            <div class="control-panel">
+                <div class="panel-title">Add Compartment</div>
+                <input type="text" id="insertValue" placeholder="Compartment Number/Name">
+                <input type="number" id="insertPosition" placeholder="Position (0 = after engine)">
+                <button onclick="insertCompartment()">Add Compartment</button>
+            </div>
+
+            <div class="control-panel">
+                <div class="panel-title">Remove Compartment</div>
+                <input type="number" id="deletePosition" placeholder="Position to Remove">
+                <button onclick="deleteCompartment()">Remove Compartment</button>
+            </div>
+
+            <div class="control-panel">
+                <div class="panel-title">Find Compartments</div>
+                <input type="text" id="searchValue" placeholder="Search Compartment">
+                <button onclick="searchCompartments()">Search</button>
+            </div>
+        </div>
+
+        <div class="train-track">
+            <div class="rails"></div>
+            <div class="train" id="train">
+                <div class="engine">
+                    <div class="smoke"></div>
+                    <div class="wheels" style="left: 30px"></div>
+                    <div class="wheels" style="right: 30px"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="search-results" id="searchResults">
+            <div class="panel-title">Search Results</div>
+            <div id="resultsList"></div>
+        </div>
+
+        <div class="message" id="message"></div>
+    </div>
+
+    <script>
+        let train = [];
+        let currentMissionIndex = 0;
+
+        const missions = [
+            {
+                description: "Add 3 compartments to start your train!",
+                check: () => train.length >= 3
+            },
+            {
+                description: "Add two compartments with the same number and try searching for them!",
+                check: () => hasDuplicates(train)
+            },
+            {
+                description: "Remove a compartment from the middle of the train!",
+                check: () => true
+            },
+            {
+                description: "Create a train with 5 compartments in ascending order!",
+                check: () => train.length >= 5 && isAscending(train)
+            }
+        ];
+
+        function hasDuplicates(arr) {
+            return arr.length !== new Set(arr.map(item => item.value)).size;
+        }
+
+        function isAscending(arr) {
+            return arr.every((val, i) => i === 0 || val.value >= arr[i-1].value);
+        }
+
+        function showMessage(text, duration = 2000) {
+            const message = document.getElementById('message');
+            message.textContent = text;
+            message.style.display = 'block';
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, duration);
+        }
+
+        function insertCompartment() {
+            const value = document.getElementById('insertValue').value;
+            const position = parseInt(document.getElementById('insertPosition').value) || train.length;
+
+            if (!value) {
+                showMessage("Please enter a compartment number/name!");
+                return;
+            }
+
+            if (position < 0 || position > train.length) {
+                showMessage("Invalid position!");
+                return;
+            }
+
+            train.splice(position, 0, { value, id: Date.now() });
+            renderTrain();
+            showMessage("Compartment added successfully!");
+            checkMission();
+        }
+
+        function deleteCompartment() {
+            const position = parseInt(document.getElementById('deletePosition').value);
+
+            if (position < 0 || position >= train.length) {
+                showMessage("Invalid position!");
+                return;
+            }
+
+            train.splice(position, 1);
+            renderTrain();
+            showMessage("Compartment removed successfully!");
+            checkMission();
+        }
+
+        function searchCompartments() {
+            const value = document.getElementById('searchValue').value;
+            const matches = train.reduce((acc, compartment, index) => {
+                if (compartment.value === value) {
+                    acc.push(index);
+                }
+                return acc;
+            }, []);
+
+            const searchResults = document.getElementById('searchResults');
+            const resultsList = document.getElementById('resultsList');
+            
+            if (matches.length === 0) {
+                resultsList.innerHTML = "No compartments found";
+            } else {
+                resultsList.innerHTML = `Found ${matches.length} compartment(s) at positions: ${matches.join(', ')}`;
+                matches.forEach(index => {
+                    const compartments = document.querySelectorAll('.compartment');
+                    compartments[index].classList.add('highlight');
+                    setTimeout(() => {
+                        compartments[index].classList.remove('highlight');
+                    }, 2000);
+                });
+            }
+            
+            searchResults.style.display = 'block';
+            setTimeout(() => {
+                searchResults.style.display = 'none';
+            }, 3000);
+
+            checkMission();
+        }
+
+        function renderTrain() {
+            const trainElement = document.getElementById('train');
+            const engine = trainElement.querySelector('.engine');
+            trainElement.innerHTML = '';
+            trainElement.appendChild(engine);
+
+            train.forEach((compartment, index) => {
+                const connector = document.createElement('div');
+                connector.className = 'connector';
+                trainElement.appendChild(connector);
+
+                const compartmentElement = document.createElement('div');
+                compartmentElement.className = 'compartment';
+                compartmentElement.textContent = compartment.value;
+                trainElement.appendChild(compartmentElement);
+            });
+        }
+
+        function checkMission() {
+            if (missions[currentMissionIndex].check()) {
+                currentMissionIndex = (currentMissionIndex + 1) % missions.length;
+                document.getElementById('currentMission').textContent = 
+                    missions[currentMissionIndex].description;
+                showMessage("Mission completed!", 3000);
+            }
+        }
+
+        // Initialize game
+        document.getElementById('currentMission').textContent = missions[0].description;
+        renderTrain();
+
+        // Add rails
+        for (let i = 0; i < 30; i++) {
+            const sleeper = document.createElement('div');
+            sleeper.className = 'sleeper';
+            sleeper.style.left = `${i * 50}px`;
+            document.querySelector('.train-track').appendChild(sleeper);
+        }
+    </script>
+</body>
+</html>
