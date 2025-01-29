@@ -1,159 +1,174 @@
-/* contact.css */
+/* frontend/src/assets/styles/contact.css */
 .contact-page-container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
-    background-color: #f4f7fc;
-    padding-top: 80px; /* Add space to prevent merging with navbar */
-  }
-  
-  .contact-content {
-    width: 100%;
-    max-width: 800px; /* Decreased the max-width for a more compact layout */
-    background-color: #ffffff;
-    border-radius: 12px;
-    padding: 30px;
-    margin-top: 20px;
-    margin-bottom: 40px;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  font-family: 'Poppins', sans-serif;
+  padding: 80px 0;
+}
 
+.contact-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  animation: fadeIn 1s ease-out;
+}
+
+.contact-details {
+  padding-right: 2rem;
+}
+
+.contact-details h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, #1a1a1a 0%, #4a5568 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.contact-details p {
+  font-size: 1.1rem;
+  color: #4b5563;
+  line-height: 1.8;
+  margin-bottom: 2rem;
+}
+
+.company-info {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  margin-top: 2rem;
+}
+
+.company-info h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.company-info ul {
+  list-style: none;
+  padding: 0;
+}
+
+.company-info ul li {
+  color: #4b5563;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.company-info ul li:last-child {
+  border-bottom: none;
+}
+
+.contact-form-container {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  color: #4b5563;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 0.75rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.form-group textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.submit-button {
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  color: white;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.submit-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+}
+
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: translateY(20px);
   }
-  
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 968px) {
+  .contact-content {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+  }
+
   .contact-details {
-    margin-bottom: 40px;
-    text-align: left;
+      padding-right: 0;
   }
-  
+}
+
+@media (max-width: 768px) {
+  .contact-content {
+      padding: 2rem 1rem;
+  }
+
   .contact-details h2 {
-    font-size: 2.5rem;
-    color: #5f2c82; /* Violet color theme */
-    font-weight: bold;
-    margin-bottom: 15px;
+      font-size: 2rem;
   }
-  
-  .contact-details p {
-    font-size: 1.2rem;
-    color: #777;
-    margin-bottom: 30px;
-  }
-  
+
   .company-info {
-    background-color: #f0f0f0; /* Light background to camouflage with page */
-    padding: 20px;
-    border-radius: 8px;
-    margin-top: 30px;
+      padding: 1.5rem;
   }
-  
-  .company-info h3 {
-    font-size: 1.8rem;
-    color: #5f2c82;
-    border-bottom: 2px solid #5f2c82;
-    padding-bottom: 10px;
-    margin-bottom: 15px;
-  }
-  
-  .company-info ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .company-info li {
-    font-size: 1.1rem;
-    color: #333;
-    line-height: 1.8;
-  }
-  
-  .company-info li strong {
-    color: #5f2c82;
-  }
-  
+
   .contact-form-container {
-    text-align: left;
+      padding: 1.5rem;
   }
-  
-  .contact-form h3 {
-    font-size: 1.8rem;
-    color: #5f2c82;
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-  
-  .contact-form .form-group {
-    margin-bottom: 20px;
-  }
-  
-  .contact-form label {
-    font-size: 1.2rem;
-    color: #5f2c82;
-    margin-bottom: 8px;
-    display: block;
-  }
-  
-  .contact-form input,
-  .contact-form textarea {
-    width: 100%;
-    padding: 12px;
-    font-size: 1.1rem;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    margin-top: 5px;
-    background-color: #f9f9f9; /* Subtle background to blend */
-    transition: all 0.3s ease;
-  }
-  
-  .contact-form input:focus,
-  .contact-form textarea:focus {
-    outline: none;
-    border-color: #5f2c82;
-    box-shadow: 0 0 8px rgba(95, 44, 130, 0.3);
-  }
-  
-  /* Increased height of the message textarea */
-  .contact-form textarea {
-    height: 200px; /* Increased height for message textarea */
-  }
-  
-  .contact-form button {
-    width: 100%;
-    padding: 15px;
-    font-size: 1.2rem;
-    background-color: #5f2c82;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-  
-  .contact-form button:hover {
-    background-color: #4b237f;
-    transform: scale(1.05);
-  }
-  
-  .contact-form button:active {
-    transform: scale(1);
-  }
-  
-  @media screen and (max-width: 768px) {
-    .contact-content {
-      padding: 20px;
-    }
-  
-    .contact-details h2 {
-      font-size: 2.2rem;
-    }
-  
-    .contact-form h3 {
-      font-size: 1.6rem;
-    }
-  
-    .contact-form input,
-    .contact-form textarea {
-      font-size: 1rem;
-    }
-  
-    .company-info h3 {
-      font-size: 1.6rem;
-    }
-  }
-  
+}
