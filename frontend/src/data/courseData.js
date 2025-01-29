@@ -11,6 +11,7 @@ const courseData = {
     title: "Introduction and Operations of Linked List",
     description: "Explore the fundamentals of linked lists, their types, and common operations like insertion, deletion, and traversal.",
     videoUrl:"https://www.youtube.com/embed/dmb1i4oN5oE?si=x0kDhml3koBbPFDn",
+    gameUrl:"/games/operations_of_linkedlist.html",
     tutorials: {
       sections: [
         {
@@ -113,6 +114,7 @@ const courseData = {
     title: "Single Linked List",
     description: "Learn the structure and operations of a single linked list, including insertion, deletion, and traversal techniques.",
     videoUrl:"https://www.youtube.com/embed/6wXZ_m3SbEs?si=oksOb0EbJfObsulU",
+    gameUrl:"https://www.codingame.com/ide/puzzle/linked-list-2",
     tutorials: {
       sections: [
         {
@@ -215,6 +217,7 @@ const courseData = {
     title: "Double Linked List",
     description: "Understand the structure and operations of a doubly linked list, where nodes are connected both forward and backward.",
     videoUrl:"https://www.youtube.com/embed/0eKMU10uEDI?si=A3q0-1meBSmZj9V3",
+    gameUrl:"https://www.codingame.com/ide/puzzle/linked-list-3",
     tutorials: {
       sections: [
         {
@@ -317,6 +320,7 @@ const courseData = {
     title: "Circular Linked List",
     description: "Learn about circular linked lists, their structure, and how to perform various operations effectively.",
     videoUrl:"https://www.youtube.com/embed/6wXZ_m3SbEs?si=myRvJyqV3_FauW6J",
+    gameUrl:"/games/circularLinkedList.html",
     tutorials: {
       sections: [
         {
@@ -424,6 +428,7 @@ const courseData = {
     title: "Stack Implementation Using Linked List",
     description: "Learn how to implement stacks using linked lists, covering basic operations like push, pop, and peek, along with their applications.",
     videoUrl:"https://www.youtube.com/embed/6wXZ_m3SbEs?si=myRvJyqV3_FauW6J",
+    gameUrl:"/games/Stack_implementaion_LL.html",
     tutorials: {
       sections: [
         {
@@ -536,6 +541,7 @@ const courseData = {
     title: "Queue Implementation Using Linked List",
     description: "Learn how to implement queues using linked lists, focusing on operations like enqueue, dequeue, and their applications in real-world scenarios.",
     videoUrl:"https://www.youtube.com/embed/0HyIda5eub8?si=HqyenpnTrMeXBbOt",
+    gameUrl:"https://www.codingame.com/ide/puzzle/linked-list-6",
     tutorials: {
       sections: [
         {

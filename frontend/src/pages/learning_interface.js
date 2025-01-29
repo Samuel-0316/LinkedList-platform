@@ -274,13 +274,35 @@ const handleTimeUp = useCallback(() => {
 
   const renderInteractiveMode = () => (
     <div className="interactive-container animate__fadeIn">
-      <div className="placeholder-content">
-        <i className="fas fa-code"></i>
-        <h2>Interactive Learning Mode</h2>
-        <p>Interactive exercises for {course.title} will be available soon.</p>
+      <div className="interactive-content">
+        <i className="fas fa-gamepad"></i>
+        <h2>Interactive Practice Game</h2>
+        <p>Practice what you've learned through an interactive game:</p>
+        
+        <div className="games-grid">
+          <a 
+            href={`${course.gameUrl}`}  // This will now look in public/games
+            className="game-link-button"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <i className="fas fa-play-circle"></i>
+            Start Practice Game: {course.title}
+          </a>
+        </div>
+
+        <div className="game-instructions">
+          <h3><i className="fas fa-info-circle"></i> Instructions</h3>
+          <ul>
+            <li>Click the button above to launch the interactive game</li>
+            <li>Practice the concepts you learned in the tutorial</li>
+            <li>You can return to this page anytime using the browser's back button</li>
+            <li>Complete the game to reinforce your understanding</li>
+          </ul>
+        </div>
       </div>
     </div>
-  );
+);
 
   const renderQuizMode = () => {
     if (quizSubmitted) {
