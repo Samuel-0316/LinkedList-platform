@@ -12,18 +12,20 @@
         }
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            background: linear-gradient(135deg, #1F4959, #011425); /* Dark teal to dark blue gradient */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             padding: 40px;
+            color: white; /* Set default text color to white for contrast */
         }
         h1 {
-            color: #3e4a59;
+            font-family: 'Cursive', sans-serif; /* Fallback cursive font */
+            color: #F1F1F1;
             margin-bottom: 30px;
-            font-size: 40px;
+            font-size: 48px; /* Increase font size for emphasis */
             letter-spacing: 3px;
             text-align: center;
             animation: slideIn 1s ease-out;
@@ -35,7 +37,7 @@
         #instructions {
             font-size: 20px;
             margin-bottom: 20px;
-            color: #607d8b;
+            color: #D1D1D1; /* Lighter color for instructions */
             text-align: center;
         }
         #list {
@@ -52,8 +54,8 @@
             100% { opacity: 1; }
         }
         .node {
-            background-color: #4CAF50;
-            color: white;
+            background-color: #c5c6c7;
+            color: black;
             padding: 20px 40px;
             border-radius: 12px;
             font-size: 24px;
@@ -71,7 +73,7 @@
             }
         }
         .node:hover {
-            background-color: #45a049;
+            background-color: #C5C6C7;
             transform: scale(1.1);
         }
         .node:active {
@@ -82,7 +84,7 @@
             color: #455a64;
         }
         button {
-            background-color: #007BFF;
+            background-color: #66FCF1;
             color: white;
             border: none;
             padding: 18px 36px;
@@ -94,7 +96,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         button:hover {
-            background-color: #0056b3;
+            background-color: #66FCF1;
             transform: scale(1.05);
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
@@ -111,7 +113,7 @@
         }
         #animation {
             font-size: 18px;
-            color: #ff5722;
+            color: #ff2222;
             margin-top: 30px;
             text-align: center;
         }
@@ -130,7 +132,7 @@
         }
         #input-container input:focus, #remove-container input:focus {
             outline: none;
-            border-color: #007BFF;
+            border-color: #66FCF1;
         }
         .node-removal {
             animation: fadeOut 0.5s forwards;
@@ -143,7 +145,7 @@
 </head>
 <body>
 
-    <h1>Interactive Doubly Linked List Game</h1>
+    <h1>𝐼𝓃𝓉𝑒𝓇𝒶𝒸𝓉𝒾𝓋𝑒 𝒟𝑜𝓊𝒷𝓁𝓎 𝐿𝒾𝓃𝓀𝑒𝒹 𝐿𝒾𝓈𝓉 𝒢𝒶𝓂𝑒</h1>
     <div id="instructions">
         <p>Enter a value for the node below and click "Add Node" to insert it.</p>
         <p>To remove a node, enter the value of the node and click "Remove Node by Value".</p>
