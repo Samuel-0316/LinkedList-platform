@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Queue Game</title>
+    <style>
+body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(#ece6e6);
+            color: #a40bd2;
+            padding: 20px;
+        }
+        .queue-container {
+            margin: 20px auto;
+            padding: 10px;
+            width: 400px;
+            border: 2px solid #8f10ea;
+            min-height: 50px;
+            background-color: rgba(156, 13, 175, 0.2);
+            border-radius: 10px;
+        }
+        .queue-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            margin: 5px;
+            background-color: #d8bfd8;
+            border-radius: 5px;
+            color: black;
+        }
+        .instructions {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            width: 50%;
+            margin: auto;
+            text-align: left;
+            color: rgb(157, 11, 198);
+        }
+        .score {
+            font-size: 20px;
+            margin: 10px;
+        }
+        button {
+            padding: 10px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4b0082;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #6a0dad;
+        }
+    </style>
+</head>
+<body>
+    <h1><b>Interactive Queue Game Using Linked List</b></h1>
+    <div class="instructions">
+        <h3>How to Play:</h3>
+        <ul>
+            <li>Click "Join Queue" to add a user to the queue.</li>
+            <li>Click "Serve Customer" to remove the front user.</li>
+            <li>Click "Reset Queue" to clear all users.</li>
+        </ul>
+    </div>
+    <button onclick="enqueue()">Join Queue</button>
+    <button onclick="dequeue()">Serve Customer</button>
+    <button onclick="resetQueue()">Reset Queue</button>
+    <div class="queue-container" id="queue"></div>
+
+    <script>
+        class Node {
+            constructor(value) {
+                this.value = value;
+                this.next = null;
+            }
+        }
+
+        class Queue {
+            constructor() {
+                this.front = null;
+                this.rear = null;
+            }
+
+            enqueue(value) {
+                let newNode = new Node(value);
+                if (!this.rear) {
+                    this.front = this.rear = newNode;
+                } else {
+                    this.rear.next = newNode;
+                    this.rear = newNode;
+                }
+            }
+
+            dequeue() {
+                if (!this.front) return null;
+                let removedValue = this.front.value;
+                this.front = this.front.next;
+                if (!this.front) this.rear = null;
+                return removedValue;
+            }
+
+            display() {
+                let temp = this.front;
+                let displayQueue = '';
+                while (temp) {
+                    displayQueue += `<div class='queue-item'>${temp.value}</div>`;
+                    temp = temp.next;
+                }
+                document.getElementById("queue").innerHTML = displayQueue;
+            }
+        }
+
+        let queue = new Queue();
+        let counter = 1;
+
+        function enqueue() {
+            queue.enqueue("User " + counter++);
+            queue.display();
+        }
+
+        function dequeue() {
+            queue.dequeue();
+            queue.display();
+        }
+
+        function resetQueue() {
+            queue = new Queue();
+            counter = 1;
+            queue.display();
+        }
+    </script>
+</body>
+</html>

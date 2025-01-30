@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Queue Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(#ffffff);
+            color: #a40bd2;
+            padding: 20px;
+        }
+        .queue-container {
+            margin: 20px auto;
+            padding: 10px;
+            width: 400px;
+            border: 2px solid #8f10ea;
+            min-height: 50px;
+            background-color: rgba(156, 13, 175, 0.2);
+            border-radius: 10px;
+        }
+        .queue-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            margin: 5px;
+            background-color: #d8bfd8;
+            border-radius: 5px;
+            color: black;
+        }
+        .instructions {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            width: 50%;
+            margin: auto;
+            text-align: left;
+            color: rgb(157, 11, 198);
+        }
+        .score {
+            font-size: 20px;
+            margin: 10px;
+        }
+        button {
+            padding: 10px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4b0082;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #6a0dad;
+        }
+    </style>
+</head>
+<body>
+    <h1>Interactive Queue Game Using Linked List</h1>
+    <div class="instructions">
+        <h3>How to Play:</h3>
+        <ul>
+            <li>Each node has a value and a memory address.</li>
+            <li>Identify the correct node to enqueue or dequeue.</li>
+            <li>If your guess is correct, you earn 10 points!</li>
+        </ul>
+    </div>
+    <div class="score">Score: <span id="score">0</span></div>
+    <button onclick="enqueue()">Join Queue</button>
+    <button onclick="guessDequeue()">Guess & Dequeue</button>
+    <button onclick="resetQueue()">Reset Queue</button>
+    <div class="queue-container" id="queue"></div>
+
+    <script>
+        class Node {
+            constructor(value) {
+                this.value = value;
+                this.next = null;
+                this.address = Math.random().toString(16).substr(2, 8);
+            }
+        }
+
+        class Queue {
+            constructor() {
+                this.front = null;
+                this.rear = null;
+            }
+
+            enqueue(value) {
+                let newNode = new Node(value);
+                if (!this.rear) {
+                    this.front = this.rear = newNode;
+                } else {
+                    this.rear.next = newNode;
+                    this.rear = newNode;
+                }
+            }
+
+            dequeue() {
+                if (!this.front) return null;
+                let removedNode = this.front;
+                this.front = this.front.next;
+                if (!this.front) this.rear = null;
+                return removedNode;
+            }
+
+            display() {
+                let temp = this.front;
+                let displayQueue = '';
+                while (temp) {
+                    displayQueue += `<div class='queue-item'>Value: ${temp.value} | Address: ${temp.address}</div>`;
+                    temp = temp.next;
+                }
+                document.getElementById("queue").innerHTML = displayQueue;
+            }
+        }
+
+        let queue = new Queue();
+        let counter = 1;
+        let score = 0;
+
+        function enqueue() {
+            queue.enqueue("User " + counter++);
+            queue.display();
+        }
+
+        function guessDequeue() {
+            let guess = prompt("Enter the address of the front node to dequeue:");
+            if (queue.front && queue.front.address === guess) {
+                queue.dequeue();
+                score += 10;
+                document.getElementById("score").innerText = score;
+                alert("Correct! +10 points");
+            } else {
+                alert("Wrong guess! Try again.");
+            }
+            queue.display();
+        }
+
+        function resetQueue() {
+            queue = new Queue();
+            counter = 1;
+            score = 0;
+            document.getElementById("score").innerText = score;
+            queue.display();
+        }
+    </script>
+</body>
+</html>
