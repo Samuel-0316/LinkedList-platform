@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduction to Linked List</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            background-color:rgb(212, 46, 254);
+            padding: 20px;
+            color: white;
+        }
+        .container {
+            width: 70%;
+            margin: auto;
+            background: rgba(0, 0, 0, 0.471);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0px 6px 15px white;
+        }
+        button, select, input {
+            margin: 10px;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: none;
+            transition: 0.3s;
+            background: #b26ee4;
+            color: white;
+        }
+        button:hover, select:hover, input:hover {
+            opacity: 0.8;
+        }
+        .btn-start {
+            background: black;
+            border: 2px solid white;
+            box-shadow: 0px 4px 10px white;
+        }
+        .linked-list {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            align-items: center;
+        }
+        .node {
+            padding: 12px;
+            background: #6a0dad;
+            border: 2px solid white;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0px 4px 10px lightpurple;
+            position: relative;
+            z-index: 1;
+        }
+        .node::after {
+            content: '\2192'; /* Right arrow */
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 20px;
+            z-index: -1;
+        }
+        .node:last-child::after {
+            content: 'NULL';
+            color: white;
+            right: -40px;
+            visibility: hidden;
+        }
+        .input-section {
+            display: none;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Introduction Linked List</h1>
+        <p>Welcome to this interactive learning experience on Linked Lists! Here, you will understand fundamental operations like insertion, deletion, and searching in a visual and engaging way. Click "Start" to begin exploring how a linked list works.</p>
+        <button class="btn-start" onclick="startGame()">Start</button>
+        <div id="options" style="display: none;">
+            <button class="btn-insert" onclick="showInsertOptions()">Insert</button>
+            <button class="btn-delete" onclick="showDeleteOptions()">Delete</button>
+            <button class="btn-search" onclick="showSearchOptions()">Search</button>
+        </div>
+        
+        <div id="input-area" class="input-section"></div>
+        
+        <div class="linked-list" id="linkedList"></div>
+        <p id="searchResult" style="color: red;"></p> <!-- Display search result or error message here -->
+    </div>
+    
+    <script>
+        let linkedList = [];
+
+        function startGame() {
+            document.getElementById("options").style.display = "block";
+        }
+
+        function renderList() {
+            const listContainer = document.getElementById("linkedList");
+            listContainer.innerHTML = linkedList.map((val, index) => `
+                <div class='node' id='node-${index}'>${val}</div>
+            `).join('');
+        }
+
+        function showInsertOptions() {
+            document.getElementById("input-area").innerHTML = `
+                <select id="insertPosition">
+                    <option value="beginning">At Beginning</option>
+                    <option value="end">At End</option>
+                    <option value="position">At Position</option>
+                </select>
+                <input type="text" id="insertValue" placeholder="Enter value" />
+                <input type="number" id="insertPos" placeholder="Enter position (optional)" style="display: none;" />
+                <button onclick="insertNode()">Insert</button>
+            `;
+            document.getElementById("input-area").style.display = "block";
+            document.getElementById("insertPosition").addEventListener("change", function() {
+                document.getElementById("insertPos").style.display = this.value === "position" ? "inline-block" : "none";
+            });
+        }
+
+        function insertNode() {
+            let position = document.getElementById("insertPosition").value;
+            let value = document.getElementById("insertValue").value;
+            let pos = parseInt(document.getElementById("insertPos").value);
+
+            if (!value) return;
+
+            if (position === "beginning") {
+                linkedList.unshift(value);
+            } else if (position === "end") {
+                linkedList.push(value);
+            } else if (position === "position" && !isNaN(pos) && pos >= 0 && pos <= linkedList.length) {
+                linkedList.splice(pos, 0, value);
+            } else {
+                alert("Invalid position or index!");
+                return;
+            }
+
+            renderList();
+        }
+
+        function showDeleteOptions() {
+            document.getElementById("input-area").innerHTML = `
+                <select id="deletePosition">
+                    <option value="front">From Front</option>
+                    <option value="end">From End</option>
+                    <option value="index">At Specific Index</option>
+                </select>
+                <input type="number" id="deleteIndex" placeholder="Enter index (if applicable)" style="display: none;" />
+                <button onclick="deleteNode()">Delete</button>
+                <p id="error-message" style="color: red;"></p>
+            `;
+            document.getElementById("input-area").style.display = "block";
+            document.getElementById("deletePosition").addEventListener("change", function() {
+                document.getElementById("deleteIndex").style.display = this.value === "index" ? "inline-block" : "none";
+            });
+        }
+
+        function deleteNode() {
+            let position = document.getElementById("deletePosition").value;
+            let index = parseInt(document.getElementById("deleteIndex").value);
+            if (position === "front" && linkedList.length > 0) {
+                linkedList.shift();
+            } else if (position === "end" && linkedList.length > 0) {
+                linkedList.pop();
+            } else if (position === "index" && index >= 0 && index < linkedList.length) {
+                linkedList.splice(index, 1);
+            } else {
+                document.getElementById("error-message").textContent = "Invalid position or index!";
+                return;
+            }
+            renderList();
+        }
+
+        function showSearchOptions() {
+            document.getElementById("input-area").innerHTML = `
+                <input type="text" id="searchValue" placeholder="Enter value to search" />
+                <button onclick="searchNode()">Search</button>
+            `;
+            document.getElementById("input-area").style.display = "block";
+        }
+
+        function searchNode() {
+            let value = document.getElementById("searchValue").value;
+            let foundIndex = linkedList.findIndex(val => val === value);
+            const searchResult = document.getElementById("searchResult");
+            if (foundIndex !== -1) {
+                searchResult.textContent = `Node found at index: ${foundIndex}`;
+                searchResult.style.color = "green";
+            } else {
+                searchResult.textContent = "Node not found!";
+                searchResult.style.color = "red";
+            }
+        }
+    </script>
+</body>
+</html>
