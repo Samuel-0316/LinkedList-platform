@@ -20,7 +20,7 @@ const app = express();
 // Middleware for parsing JSON
 app.use(express.json());
 app.use(cors({
-    origin: 'https://linked-list-platform.vercel.app/', // Replace with your actual frontend domain
+    origin: '*', // Replace with your actual frontend domain
     methods: ['GET', 'POST', 'PUT', 'DELETE'],         // Allowed HTTP methods
     credentials: true                                  // Allow cookies, tokens, etc.
   }));
