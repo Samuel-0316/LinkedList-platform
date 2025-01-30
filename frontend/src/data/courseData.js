@@ -11,7 +11,7 @@ const courseData = {
     title: "Introduction and Operations of Linked List",
     description: "Explore the fundamentals of linked lists, their types, and common operations like insertion, deletion, and traversal.",
     videoUrl:"https://www.youtube.com/embed/dmb1i4oN5oE?si=x0kDhml3koBbPFDn",
-    gameUrl:"/games/operations_of_linkedlist.html",
+    gameUrl:"/games/Intro_to_linkedlist.html",
     tutorials: {
       sections: [
         {
@@ -114,7 +114,7 @@ const courseData = {
     title: "Single Linked List",
     description: "Learn the structure and operations of a single linked list, including insertion, deletion, and traversal techniques.",
     videoUrl:"https://www.youtube.com/embed/6wXZ_m3SbEs?si=oksOb0EbJfObsulU",
-    gameUrl:"https://www.codingame.com/ide/puzzle/linked-list-2",
+    gameUrl:"/games/single_linkedlist.html",
     tutorials: {
       sections: [
         {
@@ -217,7 +217,7 @@ const courseData = {
     title: "Double Linked List",
     description: "Understand the structure and operations of a doubly linked list, where nodes are connected both forward and backward.",
     videoUrl:"https://www.youtube.com/embed/0eKMU10uEDI?si=A3q0-1meBSmZj9V3",
-    gameUrl:"https://www.codingame.com/ide/puzzle/linked-list-3",
+    gameUrl:"/games/double_linked_list.html",
     tutorials: {
       sections: [
         {
