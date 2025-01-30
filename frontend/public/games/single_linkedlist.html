@@ -24,27 +24,6 @@
             padding: 20px;
         }
 
-        .sky {
-            height: 200px;
-            background: linear-gradient(#001f3f, #003366);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stars {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-image: radial-gradient(white 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: starTwinkle 3s infinite;
-        }
-
-        @keyframes starTwinkle {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
-
         .train-track {
             background: #2c3e50;
             padding: 40px 20px;
@@ -70,34 +49,14 @@
             position: relative;
             z-index: 1;
             transition: transform 0.5s;
+            margin-bottom: 40px;
         }
 
-        .engine {
-            width: 150px;
+        .coach {
+            width: 160px;
             height: 100px;
-            background: #3ca0e7;
-            border-radius: 10px;
-            position: relative;
-            margin-right: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-
-        .engine:before {
-            content: 'Head';
-            position: absolute;
-            top: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #fff;
-            font-weight: bold;
-        }
-
-        .compartment {
-            width: 120px;
-            height: 80px;
-            background: #3498db;
-            border-radius: 8px;
-            margin: 0 5px;
+            border-radius: 12px;
+            margin: 0 10px;
             position: relative;
             display: flex;
             align-items: center;
@@ -110,20 +69,50 @@
             flex-direction: column;
         }
 
-        .compartment:after {
-            content: '→';
-            position: absolute;
-            right: -15px;
-            font-size: 20px;
-            color: #f1c40f;
+        .head-coach {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
         }
 
-        .compartment:last-child:after {
+        .normal-coach {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+        }
+
+        .coach:before {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 20px;
+            right: 20px;
+            height: 10px;
+            background: #2c3e50;
+            border-radius: 5px;
+        }
+
+        .coach:after {
+            content: '→';
+            position: absolute;
+            right: -20px;
+            font-size: 24px;
+            color: #f1c40f;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .coach:last-child:after {
             content: '⊥';
             color: #e74c3c;
         }
 
-        .compartment .index {
+        .head-label {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #e74c3c;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .coach .index {
             font-size: 0.8em;
             color: #f1c40f;
             margin-top: 5px;
@@ -210,51 +199,75 @@
             margin-top: 20px;
             font-family: monospace;
             white-space: pre;
+            color: #fff;
         }
 
         .highlight {
-            background: #f1c40f;
+            background: linear-gradient(45deg, #f1c40f, #f39c12) !important;
             transform: translateY(-5px);
+        }
+
+        .wheels:before, .wheels:after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            width: 30px;
+            height: 30px;
+            background: #34495e;
+            border-radius: 50%;
+            border: 4px solid #95a5a6;
+        }
+
+        .wheels:before {
+            left: 20px;
+        }
+
+        .wheels:after {
+            right: 20px;
         }
     </style>
 </head>
 <body>
     <div class="game-container">
-        <div class="sky">
-            <div class="stars"></div>
-        </div>
-
         <div class="mission-panel">
-            <div class="mission-title">Linked List Training</div>
-            <div id="currentMission">Welcome to Train Master! Learn linked lists by managing your train.</div>
+            <div class="mission-title">Simple Single Linked List Demonstration</div>
+            <div id="currentMission">Here we will learn:
+                <br>• Insertion at point
+                <br>• Deletion at point
+                <br>• Traversal of linked list
+                <br>• Searching in linked list</div>
         </div>
 
         <div class="controls">
             <div class="control-panel">
-                <div class="panel-title">Add Compartment</div>
-                <input type="text" id="insertValue" placeholder="Compartment Value">
+                <div class="panel-title">Add Coach</div>
+                <input type="text" id="insertValue" placeholder="Coach Value">
                 <input type="number" id="insertPosition" placeholder="Position (0 = start)">
-                <button onclick="insertCompartment()">Insert at Position</button>
-                <button onclick="appendCompartment()">Append to End</button>
+                <button onclick="insertCoach()">Insert at Position</button>
+                <button onclick="appendCoach()">Append to End</button>
             </div>
 
             <div class="control-panel">
-                <div class="panel-title">Remove Compartment</div>
+                <div class="panel-title">Remove Coach</div>
                 <input type="number" id="deletePosition" placeholder="Position to Remove">
-                <button onclick="deleteCompartment()">Remove Compartment</button>
+                <button onclick="deleteCoach()">Remove Coach</button>
             </div>
 
             <div class="control-panel">
-                <div class="panel-title">Traverse List</div>
+                <div class="panel-title">Search Coach</div>
+                <input type="text" id="searchValue" placeholder="Value to Search">
+                <button onclick="searchCoach()">Search</button>
+            </div>
+
+            <div class="control-panel">
+                <div class="panel-title">Traverse Train</div>
                 <button onclick="traverseList()">Show Traversal</button>
             </div>
         </div>
 
         <div class="train-track">
             <div class="rails"></div>
-            <div class="train" id="train">
-                <div class="engine"></div>
-            </div>
+            <div class="train" id="train"></div>
         </div>
 
         <div class="traversal-display" id="traversalDisplay"></div>
@@ -321,6 +334,22 @@
                 return removedValue;
             }
 
+            search(value) {
+                let current = this.head;
+                let position = 0;
+                let found = [];
+
+                while (current !== null) {
+                    if (current.value === value) {
+                        found.push(position);
+                    }
+                    current = current.next;
+                    position++;
+                }
+
+                return found;
+            }
+
             traverse() {
                 let result = [];
                 let current = this.head;
@@ -337,9 +366,6 @@
         }
 
         const train = new LinkedList();
-    
-
-        let currentMissionIndex = 0;
 
         function showMessage(text, duration = 2000) {
             const message = document.getElementById('message');
@@ -352,101 +378,115 @@
 
         function renderTrain() {
             const trainElement = document.getElementById('train');
-            const engine = trainElement.querySelector('.engine');
             trainElement.innerHTML = '';
-            trainElement.appendChild(engine);
 
             let current = train.head;
             let index = 0;
+            
             while (current !== null) {
-                const compartment = document.createElement('div');
-                compartment.className = 'compartment';
-                compartment.innerHTML = `
-                    <div>${current.value}</div>
-                    <div class="index">pos: ${index}</div>
-                `;
-                trainElement.appendChild(compartment);
+                const coach = document.createElement('div');
+                coach.className = `coach wheels ${index === 0 ? 'head-coach' : 'normal-coach'}`;
+                if (index === 0) {
+                    coach.innerHTML = `
+                        <div class="head-label">HEAD</div>
+                        <div>${current.value}</div>
+                        <div class="index">pos: ${index}</div>
+                    `;
+                } else {
+                    coach.innerHTML = `
+                        <div>${current.value}</div>
+                        <div class="index">pos: ${index}</div>
+                    `;
+                }
+                trainElement.appendChild(coach);
                 current = current.next;
                 index++;
             }
         }
 
-        function insertCompartment() {
+        function insertCoach() {
             const value = document.getElementById('insertValue').value;
             const position = parseInt(document.getElementById('insertPosition').value);
 
             if (!value) {
-                showMessage("Please enter a compartment value!");
+                showMessage("Please enter a coach value!");
                 return;
             }
 
             try {
                 train.insert(value, position);
                 renderTrain();
-                showMessage("Compartment inserted successfully!");
-                checkMission();
+                showMessage("Coach inserted successfully!");
             } catch (error) {
                 showMessage(error.message);
             }
         }
 
-        function appendCompartment() {
+        function appendCoach() {
             const value = document.getElementById('insertValue').value;
 
             if (!value) {
-                showMessage("Please enter a compartment value!");
+                showMessage("Please enter a coach value!");
                 return;
             }
 
             train.append(value);
             renderTrain();
-            showMessage("Compartment appended successfully!");
-            checkMission();
+            showMessage("Coach appended successfully!");
         }
 
-        function deleteCompartment() {
+        function deleteCoach() {
             const position = parseInt(document.getElementById('deletePosition').value);
 
             try {
                 train.remove(position);
                 renderTrain();
-                showMessage("Compartment removed successfully!");
-                checkMission();
+                showMessage("Coach removed successfully!");
             } catch (error) {
                 showMessage(error.message);
             }
         }
 
-        async function traverseList() {
-            const compartments = document.querySelectorAll('.compartment');
+        async function searchCoach() {
+            const value = document.getElementById('searchValue').value;
+            const positions = train.search(value);
+            const coaches = document.querySelectorAll('.coach');
             const traversalDisplay = document.getElementById('traversalDisplay');
-            let output = "Traversing linked list:\n";
+
+            if (positions.length === 0) {
+                traversalDisplay.textContent = `Value "${value}" not found in the train`;
+                return;
+            }
+
+            traversalDisplay.textContent = `Value "${value}" found at position(s): ${positions.join(', ')}`;
+
+            // Highlight found coaches
+            positions.forEach(pos => {
+                coaches[pos].classList.add('highlight');
+                setTimeout(() => {
+                    coaches[pos].classList.remove('highlight');
+                }, 2000);
+            });
+        }
+
+        async function traverseList() {
+            const coaches = document.querySelectorAll('.coach');
+            const traversalDisplay = document.getElementById('traversalDisplay');
+            let output = "Traversing train coaches:\n";
             
-            for (let i = 0; i < compartments.length; i++) {
-                compartments[i].classList.add('highlight');
-                output += `Node ${i}: ${train.traverse()[i]}\n`;
+            for (let i = 0; i < coaches.length; i++) {
+                coaches[i].classList.add('highlight');
+                output += `Coach ${i}: ${train.traverse()[i]}\n`;
                 traversalDisplay.textContent = output;
                 await new Promise(resolve => setTimeout(resolve, 1000));
-                compartments[i].classList.remove('highlight');
+                coaches[i].classList.remove('highlight');
             }
-            output += "End of list reached!";
+            output += "End of train reached!";
             traversalDisplay.textContent = output;
-            checkMission();
         }
 
-        
-
-        // Initialize game
-        document.getElementById('currentMission').textContent = missions[0].description;
+        // Initialize
         renderTrain();
-
-        // Add rails
-        for (let i = 0; i < 30; i++) {
-            const sleeper = document.createElement('div');
-            sleeper.className = 'sleeper';
-            sleeper.style.left = `${i * 50}px`;
-            document.querySelector('.train-track').appendChild(sleeper);
-        }
     </script>
 </body>
 </html>
