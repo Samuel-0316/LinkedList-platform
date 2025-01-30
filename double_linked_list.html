@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Doubly Linked List Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px;
+        }
+        h1 {
+            color: #3e4a59;
+            margin-bottom: 30px;
+            font-size: 40px;
+            letter-spacing: 3px;
+            text-align: center;
+            animation: slideIn 1s ease-out;
+        }
+        @keyframes slideIn {
+            0% { transform: translateY(-100px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        #instructions {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #607d8b;
+            text-align: center;
+        }
+        #list {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+            animation: fadeIn 1.5s ease-out;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        .node {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px 40px;
+            border-radius: 12px;
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(50px);
+            animation: slideInNode 0.5s forwards;
+        }
+        @keyframes slideInNode {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .node:hover {
+            background-color: #45a049;
+            transform: scale(1.1);
+        }
+        .node:active {
+            transform: scale(0.95);
+        }
+        .arrow {
+            font-size: 32px;
+            color: #455a64;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 18px 36px;
+            font-size: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        button:active {
+            transform: scale(0.95);
+        }
+        .game-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .game-controls button {
+            margin: 0 15px;
+        }
+        #animation {
+            font-size: 18px;
+            color: #ff5722;
+            margin-top: 30px;
+            text-align: center;
+        }
+        #input-container, #remove-container {
+            margin-bottom: 30px;
+        }
+        #input-container input, #remove-container input {
+            padding: 12px 18px;
+            font-size: 18px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            margin-right: 12px;
+            width: 220px;
+            background-color: #ffffff;
+            color: #333;
+        }
+        #input-container input:focus, #remove-container input:focus {
+            outline: none;
+            border-color: #007BFF;
+        }
+        .node-removal {
+            animation: fadeOut 0.5s forwards;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; transform: scale(0.5); }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Interactive Doubly Linked List Game</h1>
+    <div id="instructions">
+        <p>Enter a value for the node below and click "Add Node" to insert it.</p>
+        <p>To remove a node, enter the value of the node and click "Remove Node by Value".</p>
+    </div>
+
+    <div id="input-container">
+        <input type="text" id="node-value" placeholder="Enter node value">
+        <button onclick="addNode()">Add Node</button>
+    </div>
+
+    <div id="remove-container">
+        <input type="text" id="remove-value" placeholder="Enter value to remove">
+        <button onclick="removeNodeByValue()">Remove Node by Value</button>
+    </div>
+
+    <div id="list">
+        <!-- List of nodes will be displayed here -->
+    </div>
+
+    <div class="game-controls">
+        <button onclick="removeNode()">Remove Last Node</button>
+        <button onclick="traverseList()">Traverse List</button>
+        <button onclick="resetList()">Reset List</button>
+    </div>
+
+    <div id="animation"></div>
+
+    <script>
+        // Doubly Linked List Node Constructor
+        function Node(value) {
+            this.value = value;
+            this.prev = null;
+            this.next = null;
+        }
+
+        // Doubly Linked List Constructor
+        function DoublyLinkedList() {
+            this.head = null;
+            this.tail = null;
+            this.size = 0;
+        }
+
+        // Add node to the list
+        DoublyLinkedList.prototype.addNode = function(value) {
+            let newNode = new Node(value);
+            if (this.size === 0) {
+                this.head = newNode;
+                this.tail = newNode;
+            } else {
+                this.tail.next = newNode;
+                newNode.prev = this.tail;
+                this.tail = newNode;
+            }
+            this.size++;
+            this.displayList();
+            showAnimation("Node Added: " + value);
+        };
+
+        // Remove node by value
+        DoublyLinkedList.prototype.removeNodeByValue = function(value) {
+            let current = this.head;
+            while (current) {
+                if (current.value === value) {
+                    let nodeToRemove = current;
+                    if (current.prev) {
+                        current.prev.next = current.next;
+                    } else {
+                        this.head = current.next; // If it's the head node
+                    }
+                    if (current.next) {
+                        current.next.prev = current.prev;
+                    } else {
+                        this.tail = current.prev; // If it's the tail node
+                    }
+                    this.size--;
+                    this.displayList();
+                    nodeToRemove.nodeElement.classList.add('node-removal');
+                    showAnimation("Node Removed: " + value);
+                    return;
+                }
+                current = current.next;
+            }
+            showAnimation("Node not found: " + value);
+        };
+
+        // Remove the last node from the list
+        DoublyLinkedList.prototype.removeNode = function() {
+            if (this.size === 0) {
+                showAnimation("No nodes to remove!");
+                return;
+            }
+            let value = this.tail.value;
+            let nodeToRemove = this.tail;
+            if (this.size === 1) {
+                this.head = null;
+                this.tail = null;
+            } else {
+                this.tail = this.tail.prev;
+                this.tail.next = null;
+            }
+            this.size--;
+            this.displayList();
+            nodeToRemove.nodeElement.classList.add('node-removal');
+            showAnimation("Node Removed: " + value);
+        };
+
+        // Display the list in HTML with arrows
+        DoublyLinkedList.prototype.displayList = function() {
+            let listDiv = document.getElementById('list');
+            listDiv.innerHTML = ''; // Clear previous list
+
+            let current = this.head;
+            while (current) {
+                let nodeDiv = document.createElement('div');
+                nodeDiv.classList.add('node');
+                nodeDiv.textContent = current.value;
+                listDiv.appendChild(nodeDiv);
+                current.nodeElement = nodeDiv;
+
+                if (current.next) {
+                    let arrowDiv = document.createElement('div');
+                    arrowDiv.classList.add('arrow');
+                    arrowDiv.textContent = '⇄';  // Double arrow between nodes
+                    listDiv.appendChild(arrowDiv);
+                }
+
+                current = current.next;
+            }
+        };
+
+        // Function to display animations
+        function showAnimation(message) {
+            let animationDiv = document.getElementById('animation');
+            animationDiv.textContent = message;
+
+            // Make the animation message disappear after 2 seconds
+            setTimeout(() => {
+                animationDiv.textContent = '';
+            }, 2000);
+        }
+
+        // Traverse through the list and log values to the console
+        function traverseList() {
+            let current = list.head;
+            let values = [];
+            while (current) {
+                values.push(current.value);
+                current = current.next;
+            }
+            if (values.length > 0) {
+                console.log("Traversing List: " + values.join(" -> "));
+                showAnimation("Traversing List: " + values.join(" -> "));
+            } else {
+                console.log("List is empty!");
+                showAnimation("List is empty!");
+            }
+        }
+
+        // Reset the list (clear all nodes)
+        function resetList() {
+            list = new DoublyLinkedList(); // Reinitialize the list
+            document.getElementById('list').innerHTML = ''; // Clear the display
+            showAnimation("List Reset!");
+        }
+
+        // Initialize the doubly linked list
+        let list = new DoublyLinkedList();
+
+        // Add a new node with a custom value
+        function addNode() {
+            let nodeValue = document.getElementById('node-value').value;
+            if (!nodeValue) {
+                alert("Please enter a value for the node!");
+                return;
+            }
+            list.addNode(nodeValue);
+            document.getElementById('node-value').value = ''; // Clear input after adding
+        }
+
+        // Remove a node by custom value
+        function removeNodeByValue() {
+            let nodeValueToRemove = document.getElementById('remove-value').value;
+            if (!nodeValueToRemove) {
+                alert("Please enter a value to remove!");
+                return;
+            }
+            list.removeNodeByValue(nodeValueToRemove);
+            document.getElementById('remove-value').value = ''; // Clear input after removing
+        }
+
+        // Remove the last node
+        function removeNode() {
+            list.removeNode();
+        }
+    </script>
+
+</body>
+</html>
