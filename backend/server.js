@@ -6,7 +6,6 @@ import errorHandler from './middlewares/errorMiddleware.js';
 import cors from 'cors';
 
 // Import Routes
-import quizRoutes from './routes/quizRoutes.js';
 import router from './routes/authRoutes.js';
 import certificateRoutes from './routes/certificateRoutes.js';
 import courseRoutes from './routes/courseRoutes.js';
@@ -20,12 +19,14 @@ const app = express();
 
 // Middleware for parsing JSON
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: 'https://linked-list-platform.vercel.app/', // Replace with your actual frontend domain
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],         // Allowed HTTP methods
+    credentials: true                                  // Allow cookies, tokens, etc.
+  }));
 
 // Routes
-console.log('Certificate route registered');
 app.use('/api/auth', router);          
-app.use('/api/quizzes', quizRoutes);       
 app.use('/certificate',certificateRoutes);
 app.use('/api/course',courseRoutes);
 app.use(errorHandler);
