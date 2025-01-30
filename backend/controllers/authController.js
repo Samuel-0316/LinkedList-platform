@@ -1,5 +1,4 @@
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 import sendResponse from '../utils/responseHandler.js';
 import generateToken from '../utils/generateToken.js';
