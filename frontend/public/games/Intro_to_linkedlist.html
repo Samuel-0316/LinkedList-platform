@@ -8,17 +8,17 @@
         body {
             font-family: 'Poppins', sans-serif;
             text-align: center;
-            background-color:rgb(212, 46, 254);
+            background-color:rgb(235, 233, 239);
             padding: 20px;
-            color: white;
+            color: rgb(0, 0, 0);
         }
         .container {
             width: 70%;
             margin: auto;
-            background: rgba(0, 0, 0, 0.471);
+            background: rgb(255, 255, 255);
             padding: 25px;
             border-radius: 15px;
-            box-shadow: 0px 6px 15px white;
+            box-shadow: 0px 6px 15px rgb(177, 29, 245);
         }
         button, select, input {
             margin: 10px;
@@ -27,13 +27,18 @@
             border-radius: 8px;
             border: none;
             transition: 0.3s;
-            background: #b26ee4;
-            color: white;
+            background: #faf9fa;
+            color: rgb(0, 0, 0);
+            box-shadow: 0px 6px 20px rgb(109, 0, 128);
         }
-        button:hover, select:hover, input:hover {
+        button:hover, select:hover {
             opacity: 0.8;
+            background-color:rgb(164, 6, 237) ;
+            color:#faf9fa ;
+            box-shadow: 0px 4px 10px white;
         }
         .btn-start {
+            color: white;
             background: black;
             border: 2px solid white;
             box-shadow: 0px 4px 10px white;
@@ -55,6 +60,7 @@
             box-shadow: 0px 4px 10px lightpurple;
             position: relative;
             z-index: 1;
+            margin-right: 10px;
         }
         .node::after {
             content: '\2192'; /* Right arrow */
@@ -62,9 +68,10 @@
             right: -20px;
             top: 50%;
             transform: translateY(-50%);
-            color: white;
+            color: rgb(0, 0, 0);
             font-size: 20px;
             z-index: -1;
+            /* margin-left: 10px; */
         }
         .node:last-child::after {
             content: 'NULL';
@@ -76,6 +83,16 @@
             display: none;
             margin-top: 20px;
         }
+        .head-text {
+    display: inline-block;
+    margin-right: 10px;
+    font-size: 18px;
+    color: rgb(164, 6, 237);
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+
     </style>
 </head>
 <body>
@@ -103,11 +120,22 @@
         }
 
         function renderList() {
-            const listContainer = document.getElementById("linkedList");
-            listContainer.innerHTML = linkedList.map((val, index) => `
-                <div class='node' id='node-${index}'>${val}</div>
-            `).join('');
+    const listContainer = document.getElementById("linkedList");
+    listContainer.innerHTML = linkedList.map((val, index) => {
+        let headText = '';
+        let arrow = '';
+        if (index === 0) {
+            headText = "<div class='head-text'>HEAD</div>"; // "HEAD" text
+            arrow = "<div class='arrow'>&#8594;</div>"; // Arrow pointing to the first node
         }
+        return `
+            ${headText} ${arrow}
+            <div class='node' id='node-${index}'>${val}</div>
+        `;
+    }).join('');
+}
+
+
 
         function showInsertOptions() {
             document.getElementById("input-area").innerHTML = `

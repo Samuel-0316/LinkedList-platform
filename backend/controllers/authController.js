@@ -50,33 +50,5 @@ const login = async (req, res) => {
     }
 };
 
-// Update profile
-const updateProfile = async (req, res) => {
-    try {
-        const { username, email, password } = req.body;
-        const userId = req.user.id; // Retrieved from JWT
 
-        // Find user by ID
-        const user = await User.findById(userId);
-        if (!user) {
-            return sendResponse(res, 404, 'User not found');
-        }
-
-        // Update user details
-        if (username) user.username = username;
-        if (email) user.email = email;
-        if (password) {
-            // Hash new password
-            const hashedPassword = await bcrypt.hash(password, 10);
-            user.password = hashedPassword;
-        }
-
-        // Save updated user
-        await user.save();
-        sendResponse(res, 200, 'Profile updated successfully', user);
-    } catch (error) {
-        sendResponse(res, 500, 'Error updating profile', error);
-    }
-};
-
-export { signup, login, updateProfile };
+export { signup, login };
