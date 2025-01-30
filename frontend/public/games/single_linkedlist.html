@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Introduction and Operations of Linked List game</title>
+    <title>Train Master - Learn Linked Lists</title>
     <style>
         * {
             margin: 0;
@@ -13,14 +13,9 @@
         }
 
         body {
-            background: #001f3f;
+            background: #cef4d656;
             color: white;
             min-height: 100vh;
-            background-image: 
-                linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
-                url('https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f682.svg');
-            background-size: 200px;
-            background-position: center;
         }
 
         .game-container {
@@ -57,6 +52,7 @@
             min-height: 250px;
             border-top: 10px solid #34495e;
             border-bottom: 10px solid #34495e;
+            overflow-x: auto;
         }
 
         .rails {
@@ -68,26 +64,18 @@
             background: #95a5a6;
         }
 
-        .sleeper {
-            position: absolute;
-            bottom: 20px;
-            width: 40px;
-            height: 20px;
-            background: #7f8c8d;
-        }
-
         .train {
             display: flex;
             align-items: center;
             position: relative;
             z-index: 1;
-            transition: all 0.3s;
+            transition: transform 0.5s;
         }
 
         .engine {
             width: 150px;
             height: 100px;
-            background: #e74c3c;
+            background: #3ca0e7;
             border-radius: 10px;
             position: relative;
             margin-right: 10px;
@@ -95,14 +83,13 @@
         }
 
         .engine:before {
-            content: '';
+            content: 'Head';
             position: absolute;
-            top: -20px;
-            left: 20px;
-            width: 30px;
-            height: 40px;
-            background: #c0392b;
-            border-radius: 5px;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-weight: bold;
         }
 
         .compartment {
@@ -120,27 +107,26 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             transition: all 0.3s;
             cursor: pointer;
+            flex-direction: column;
         }
 
-        .compartment:hover {
-            transform: translateY(-5px);
+        .compartment:after {
+            content: '→';
+            position: absolute;
+            right: -15px;
+            font-size: 20px;
+            color: #f1c40f;
         }
 
-        .compartment.highlight {
-            background: #f1c40f;
-            animation: pulse 1s infinite;
+        .compartment:last-child:after {
+            content: '⊥';
+            color: #e74c3c;
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .connector {
-            width: 10px;
-            height: 20px;
-            background: #2c3e50;
-            margin: 0 2px;
+        .compartment .index {
+            font-size: 0.8em;
+            color: #f1c40f;
+            margin-top: 5px;
         }
 
         .controls {
@@ -181,7 +167,7 @@
             margin: 5px 0;
             border: none;
             border-radius: 4px;
-            background: #e74c3c;
+            background: #733ca6;
             color: white;
             cursor: pointer;
             transition: all 0.3s;
@@ -190,7 +176,6 @@
 
         button:hover {
             background: #c0392b;
-            transform: translateY(-2px);
         }
 
         .mission-panel {
@@ -206,48 +191,6 @@
             margin-bottom: 10px;
         }
 
-        .search-results {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(44, 62, 80, 0.9);
-            padding: 15px;
-            border-radius: 8px;
-            max-width: 300px;
-            display: none;
-        }
-
-        .smoke {
-            position: absolute;
-            top: -20px;
-            left: 30px;
-            width: 10px;
-            height: 10px;
-            background: rgba(255,255,255,0.8);
-            border-radius: 50%;
-            animation: smoke 2s infinite;
-        }
-
-        @keyframes smoke {
-            0% { transform: translateY(0) scale(1); opacity: 0.8; }
-            100% { transform: translateY(-50px) scale(2); opacity: 0; }
-        }
-
-        .wheels {
-            position: absolute;
-            bottom: -10px;
-            width: 20px;
-            height: 20px;
-            background: #2c3e50;
-            border-radius: 50%;
-            animation: rotate 2s linear infinite;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
         .message {
             position: fixed;
             top: 20px;
@@ -259,6 +202,20 @@
             z-index: 1000;
             display: none;
         }
+
+        .traversal-display {
+            background: rgba(44, 62, 80, 0.9);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-family: monospace;
+            white-space: pre;
+        }
+
+        .highlight {
+            background: #f1c40f;
+            transform: translateY(-5px);
+        }
     </style>
 </head>
 <body>
@@ -268,16 +225,17 @@
         </div>
 
         <div class="mission-panel">
-            <div class="mission-title">Current Mission</div>
-            <div id="currentMission">Welcome to Train Master!</div>
+            <div class="mission-title">Linked List Training</div>
+            <div id="currentMission">Welcome to Train Master! Learn linked lists by managing your train.</div>
         </div>
 
         <div class="controls">
             <div class="control-panel">
                 <div class="panel-title">Add Compartment</div>
-                <input type="text" id="insertValue" placeholder="Compartment Number/Name">
-                <input type="number" id="insertPosition" placeholder="Position (0 = after engine)">
-                <button onclick="insertCompartment()">Add Compartment</button>
+                <input type="text" id="insertValue" placeholder="Compartment Value">
+                <input type="number" id="insertPosition" placeholder="Position (0 = start)">
+                <button onclick="insertCompartment()">Insert at Position</button>
+                <button onclick="appendCompartment()">Append to End</button>
             </div>
 
             <div class="control-panel">
@@ -287,61 +245,101 @@
             </div>
 
             <div class="control-panel">
-                <div class="panel-title">Find Compartments</div>
-                <input type="text" id="searchValue" placeholder="Search Compartment">
-                <button onclick="searchCompartments()">Search</button>
+                <div class="panel-title">Traverse List</div>
+                <button onclick="traverseList()">Show Traversal</button>
             </div>
         </div>
 
         <div class="train-track">
             <div class="rails"></div>
             <div class="train" id="train">
-                <div class="engine">
-                    <div class="smoke"></div>
-                    <div class="wheels" style="left: 30px"></div>
-                    <div class="wheels" style="right: 30px"></div>
-                </div>
+                <div class="engine"></div>
             </div>
         </div>
 
-        <div class="search-results" id="searchResults">
-            <div class="panel-title">Search Results</div>
-            <div id="resultsList"></div>
-        </div>
-
+        <div class="traversal-display" id="traversalDisplay"></div>
         <div class="message" id="message"></div>
     </div>
 
     <script>
-        let train = [];
-        let currentMissionIndex = 0;
-
-        const missions = [
-            {
-                description: "Add 3 compartments to start your train!",
-                check: () => train.length >= 3
-            },
-            {
-                description: "Add two compartments with the same number and try searching for them!",
-                check: () => hasDuplicates(train)
-            },
-            {
-                description: "Remove a compartment from the middle of the train!",
-                check: () => true
-            },
-            {
-                description: "Create a train with 5 compartments in ascending order!",
-                check: () => train.length >= 5 && isAscending(train)
+        class Node {
+            constructor(value) {
+                this.value = value;
+                this.next = null;
             }
-        ];
-
-        function hasDuplicates(arr) {
-            return arr.length !== new Set(arr.map(item => item.value)).size;
         }
 
-        function isAscending(arr) {
-            return arr.every((val, i) => i === 0 || val.value >= arr[i-1].value);
+        class LinkedList {
+            constructor() {
+                this.head = null;
+                this.size = 0;
+            }
+
+            insert(value, position) {
+                if (position < 0 || position > this.size) {
+                    throw new Error("Invalid position");
+                }
+
+                const newNode = new Node(value);
+
+                if (position === 0) {
+                    newNode.next = this.head;
+                    this.head = newNode;
+                } else {
+                    let current = this.head;
+                    for (let i = 0; i < position - 1; i++) {
+                        current = current.next;
+                    }
+                    newNode.next = current.next;
+                    current.next = newNode;
+                }
+                this.size++;
+            }
+
+            append(value) {
+                this.insert(value, this.size);
+            }
+
+            remove(position) {
+                if (position < 0 || position >= this.size) {
+                    throw new Error("Invalid position");
+                }
+
+                let removedValue;
+                if (position === 0) {
+                    removedValue = this.head.value;
+                    this.head = this.head.next;
+                } else {
+                    let current = this.head;
+                    for (let i = 0; i < position - 1; i++) {
+                        current = current.next;
+                    }
+                    removedValue = current.next.value;
+                    current.next = current.next.next;
+                }
+                this.size--;
+                return removedValue;
+            }
+
+            traverse() {
+                let result = [];
+                let current = this.head;
+                while (current !== null) {
+                    result.push(current.value);
+                    current = current.next;
+                }
+                return result;
+            }
+
+            getSize() {
+                return this.size;
+            }
         }
+
+        const train = new LinkedList();
+    
+
+        let currentMissionIndex = 0;
 
         function showMessage(text, duration = 2000) {
             const message = document.getElementById('message');
@@ -352,99 +350,91 @@
             }, duration);
         }
 
-        function insertCompartment() {
-            const value = document.getElementById('insertValue').value;
-            const position = parseInt(document.getElementById('insertPosition').value) || train.length;
-
-            if (!value) {
-                showMessage("Please enter a compartment number/name!");
-                return;
-            }
-
-            if (position < 0 || position > train.length) {
-                showMessage("Invalid position!");
-                return;
-            }
-
-            train.splice(position, 0, { value, id: Date.now() });
-            renderTrain();
-            showMessage("Compartment added successfully!");
-            checkMission();
-        }
-
-        function deleteCompartment() {
-            const position = parseInt(document.getElementById('deletePosition').value);
-
-            if (position < 0 || position >= train.length) {
-                showMessage("Invalid position!");
-                return;
-            }
-
-            train.splice(position, 1);
-            renderTrain();
-            showMessage("Compartment removed successfully!");
-            checkMission();
-        }
-
-        function searchCompartments() {
-            const value = document.getElementById('searchValue').value;
-            const matches = train.reduce((acc, compartment, index) => {
-                if (compartment.value === value) {
-                    acc.push(index);
-                }
-                return acc;
-            }, []);
-
-            const searchResults = document.getElementById('searchResults');
-            const resultsList = document.getElementById('resultsList');
-            
-            if (matches.length === 0) {
-                resultsList.innerHTML = "No compartments found";
-            } else {
-                resultsList.innerHTML = `Found ${matches.length} compartment(s) at positions: ${matches.join(', ')}`;
-                matches.forEach(index => {
-                    const compartments = document.querySelectorAll('.compartment');
-                    compartments[index].classList.add('highlight');
-                    setTimeout(() => {
-                        compartments[index].classList.remove('highlight');
-                    }, 2000);
-                });
-            }
-            
-            searchResults.style.display = 'block';
-            setTimeout(() => {
-                searchResults.style.display = 'none';
-            }, 3000);
-
-            checkMission();
-        }
-
         function renderTrain() {
             const trainElement = document.getElementById('train');
             const engine = trainElement.querySelector('.engine');
             trainElement.innerHTML = '';
             trainElement.appendChild(engine);
 
-            train.forEach((compartment, index) => {
-                const connector = document.createElement('div');
-                connector.className = 'connector';
-                trainElement.appendChild(connector);
-
-                const compartmentElement = document.createElement('div');
-                compartmentElement.className = 'compartment';
-                compartmentElement.textContent = compartment.value;
-                trainElement.appendChild(compartmentElement);
-            });
-        }
-
-        function checkMission() {
-            if (missions[currentMissionIndex].check()) {
-                currentMissionIndex = (currentMissionIndex + 1) % missions.length;
-                document.getElementById('currentMission').textContent = 
-                    missions[currentMissionIndex].description;
-                showMessage("Mission completed!", 3000);
+            let current = train.head;
+            let index = 0;
+            while (current !== null) {
+                const compartment = document.createElement('div');
+                compartment.className = 'compartment';
+                compartment.innerHTML = `
+                    <div>${current.value}</div>
+                    <div class="index">pos: ${index}</div>
+                `;
+                trainElement.appendChild(compartment);
+                current = current.next;
+                index++;
             }
         }
+
+        function insertCompartment() {
+            const value = document.getElementById('insertValue').value;
+            const position = parseInt(document.getElementById('insertPosition').value);
+
+            if (!value) {
+                showMessage("Please enter a compartment value!");
+                return;
+            }
+
+            try {
+                train.insert(value, position);
+                renderTrain();
+                showMessage("Compartment inserted successfully!");
+                checkMission();
+            } catch (error) {
+                showMessage(error.message);
+            }
+        }
+
+        function appendCompartment() {
+            const value = document.getElementById('insertValue').value;
+
+            if (!value) {
+                showMessage("Please enter a compartment value!");
+                return;
+            }
+
+            train.append(value);
+            renderTrain();
+            showMessage("Compartment appended successfully!");
+            checkMission();
+        }
+
+        function deleteCompartment() {
+            const position = parseInt(document.getElementById('deletePosition').value);
+
+            try {
+                train.remove(position);
+                renderTrain();
+                showMessage("Compartment removed successfully!");
+                checkMission();
+            } catch (error) {
+                showMessage(error.message);
+            }
+        }
+
+        async function traverseList() {
+            const compartments = document.querySelectorAll('.compartment');
+            const traversalDisplay = document.getElementById('traversalDisplay');
+            let output = "Traversing linked list:\n";
+            
+            for (let i = 0; i < compartments.length; i++) {
+                compartments[i].classList.add('highlight');
+                output += `Node ${i}: ${train.traverse()[i]}\n`;
+                traversalDisplay.textContent = output;
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                compartments[i].classList.remove('highlight');
+            }
+            output += "End of list reached!";
+            traversalDisplay.textContent = output;
+            checkMission();
+        }
+
+        
 
         // Initialize game
         document.getElementById('currentMission').textContent = missions[0].description;
