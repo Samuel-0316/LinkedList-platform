@@ -541,7 +541,7 @@ const courseData = {
     title: "Queue Implementation Using Linked List",
     description: "Learn how to implement queues using linked lists, focusing on operations like enqueue, dequeue, and their applications in real-world scenarios.",
     videoUrl:"https://www.youtube.com/embed/0HyIda5eub8?si=HqyenpnTrMeXBbOt",
-    gameUrl:"/games/queue_link-1.html",
+    gameUrl:"/games/queue_link-2.html",
     tutorials: {
       sections: [
         {
