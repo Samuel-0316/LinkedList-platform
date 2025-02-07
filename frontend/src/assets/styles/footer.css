@@ -118,3 +118,22 @@
 .footer-content {
   animation: fadeIn 0.5s ease-out;
 }
+
+.footer-container.gradient-bg {
+  background: linear-gradient(135deg, #2b5876 0%, #4e4376 100%);
+  color: white;
+  padding: 2rem 0;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  text-align: center;
+}
+
+.footer-content p {
+  margin: 8px 0;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
