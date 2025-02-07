@@ -492,6 +492,14 @@ const handleTimeUp = useCallback(() => {
 
   return (
     <div className="learning-interface-page">
+      <button 
+        className="back-to-dashboard"
+        onClick={() => navigate('/dashboard')}
+      >
+        <i className="fas fa-arrow-left"></i>
+        Back to Dashboard
+      </button>
+
       <div className="mode-switcher">
         <button 
           className={`mode-button ${activeMode === 'tutorial' ? 'active' : ''}`}
