@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import '../assets/styles/courses.css';
+import Footer from '../components/footer';
 
 const CoursesPage = () => {
   const courses = [
@@ -142,6 +143,8 @@ const CoursesPage = () => {
           </motion.div>
         ))}
       </motion.div>
+
+      <Footer />
     </div>
   );
 };
